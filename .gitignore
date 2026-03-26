@@ -11,7 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+
 .env
+.env.local
+.env.*.local
+
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +27,24 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# --- 額外補充 ---
+
+# TypeScript 增量編譯
+*.tsbuildinfo
+
+# 快取 (Caches)
+.eslintcache
+.stylelintcache
+.cache/
+.turbo/
+
+# 測試 (Testing)
+coverage/
+.nyc_output/
+
+# 雲端與部署 (Serverless / Docker)
+.serverless/
+.dockerignore
+# 如果你有 Docker，通常會保留 Dockerfile 但排除產生的資料

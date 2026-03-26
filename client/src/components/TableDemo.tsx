@@ -51,8 +51,8 @@ const StockTable: React.FC = () => {
   const handleAdd = async () => {
     // 準備要新增的資料物件 (配合你之前的 Interface)
     const newData = {
-      stock_symbol: "2317",
-      stock_name: "鴻海",
+      stock_symbol: "2318",
+      stock_name: "鴻海1",
       current_price: 155.5, // 注意：PG 數值型別建議傳 number 或符合格式的 string
     };
     try {
@@ -117,6 +117,7 @@ const StockTable: React.FC = () => {
 
   // 2. 設定表格欄位
   const columns: TableProps<StockRecord>["columns"] = [
+    { title: "ID", dataIndex: "id" },
     { title: "代號", dataIndex: "stock_symbol", key: "stock_symbol" },
     { title: "股票名稱", dataIndex: "stock_name", key: "stock_name" },
     {

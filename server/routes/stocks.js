@@ -26,7 +26,7 @@ let stocks = [
 
 // 【GET】取得所有股票
 router.get("/", async (req, res) => {
-  const result = await db.query("SELECT * from stocks");
+  const result = await db.query("SELECT * from stocks ORDER BY id");
   res.json({ success: true, data: result.rows });
 });
 
@@ -73,22 +73,38 @@ router.post("/", async (req, res) => {
 // });
 
 // 【PUT】更新股票資訊 (例如價格)
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const index = stocks.findIndex((s) => s.id === id);
+  try {
+    const result = await db.query(
+      "UPDATE stocks SET stock_name = '馬克1' WHERE id = $1",
+      [id],
+    );
 
-  if (index === -1) {
-    return res.status(404).json({ success: false, message: "找不到該股票" });
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: "找不到該股票" });
+    }
+    res.json({ success: true, message: "更新成功" });
+    console.log(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 
-  // 更新內容並同步更新時間
-  stocks[index] = {
-    ...stocks[index],
-    ...req.body,
-    updated_at: new Date().toISOString(),
-  };
+  // const { id } = req.params;
+  // const index = stocks.findIndex((s) => s.id === id);
 
-  res.json({ success: true, data: stocks[index] });
+  // if (index === -1) {
+  //   return res.status(404).json({ success: false, message: "找不到該股票" });
+  // }
+
+  // // 更新內容並同步更新時間
+  // stocks[index] = {
+  //   ...stocks[index],
+  //   ...req.body,
+  //   updated_at: new Date().toISOString(),
+  // };
+
+  // res.json({ success: true, data: stocks[index] });
 });
 
 // 【DELETE】刪除股票
