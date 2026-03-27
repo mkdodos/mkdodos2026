@@ -48,19 +48,15 @@ const StockTable: React.FC = () => {
   };
 
   // 【CREATE】新增語法
-  const handleAdd = async () => {
+  const handleAdd = async (current_price: string, stock_name: string) => {
     // 準備要新增的資料物件 (配合你之前的 Interface)
-    const newData = {
-      stock_symbol: "2318",
-      stock_name: "鴻海1",
-      current_price: 155.5, // 注意：PG 數值型別建議傳 number 或符合格式的 string
-    };
+
     try {
       const response = await fetch("/api/stocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // body: JSON.stringify(values),
-        body: JSON.stringify(newData),
+        body: JSON.stringify({ current_price, stock_name }),
       });
 
       const result = await response.json();
@@ -94,12 +90,16 @@ const StockTable: React.FC = () => {
   };
 
   // 【UPDATE】範例：假設更新價格
-  const handleUpdatePrice = async (id: string, newPrice: string) => {
+  const handleUpdatePrice = async (
+    id: string,
+    newPrice: string,
+    stock_name: string,
+  ) => {
     try {
       const response = await fetch(`/api/stocks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ current_price: newPrice }),
+        body: JSON.stringify({ current_price: newPrice, stock_name }),
       });
       const result: ApiResponse<StockRecord> = await response.json();
       if (result.success) {
@@ -138,7 +138,7 @@ const StockTable: React.FC = () => {
         <Space size="middle">
           <Button
             type="link"
-            onClick={() => handleUpdatePrice(record.id, "100")}
+            onClick={() => handleUpdatePrice(record.id, "30", "仁寶")}
           >
             設為$100
           </Button>
@@ -170,10 +170,13 @@ const StockTable: React.FC = () => {
     >
       <div style={{ padding: 24 }}>
         <div style={{ marginBottom: 16 }}>
-          <Button type="primary" onClick={fetchStocks}>
+          <Button type="default" onClick={fetchStocks}>
             重整資料
           </Button>
-          <Button type="primary" onClick={() => handleAdd()}>
+          <Button
+            type="primary"
+            onClick={() => handleAdd("2550", "我的2550股")}
+          >
             新增資料
           </Button>
         </div>

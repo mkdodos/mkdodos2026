@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db"); // 引入連線模組
 
-// import { Request, Response } from "express";
-
 // 模擬資料庫
 let stocks = [
   {
@@ -34,15 +32,15 @@ router.get("/", async (req, res) => {
 
 // 【POST】新增資料到 PostgreSQL
 router.post("/", async (req, res) => {
-  const { stock_symbol, stock_name, current_price } = req.body;
+  const { stock_name, current_price } = req.body;
 
   try {
     const query = `
       INSERT INTO stocks (stock_symbol, stock_name, current_price) 
-      VALUES ($1, $2, $3) 
+      VALUES ('aa',$1, $2) 
       RETURNING *
     `;
-    const values = [stock_symbol, stock_name, current_price];
+    const values = [stock_name, current_price];
 
     const result = await db.query(query, values);
 
@@ -56,29 +54,15 @@ router.post("/", async (req, res) => {
     res.status(500).json({ success: false, message: "資料庫寫入出錯" });
   }
 });
-// router.post("/", (req, res) => {
-//   const { stock_symbol, stock_name, current_price } = req.body;
-
-//   const newStock = {
-//     id: Date.now().toString(), // 產生簡易唯一 ID
-//     stock_symbol,
-//     stock_name,
-//     current_price: current_price.toString(),
-//     created_at: new Date().toISOString(),
-//     updated_at: new Date().toISOString(),
-//   };
-
-//   stocks.push(newStock);
-//   res.status(201).json({ success: true, data: newStock });
-// });
 
 // 【PUT】更新股票資訊 (例如價格)
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
+  const { current_price, stock_name } = req.body;
   try {
     const result = await db.query(
-      "UPDATE stocks SET stock_name = '馬克1' WHERE id = $1",
-      [id],
+      "UPDATE stocks SET stock_name = $1,current_price=$2 WHERE id = $3",
+      [stock_name, current_price, id],
     );
 
     if (result.rowCount === 0) {
@@ -89,22 +73,6 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
-
-  // const { id } = req.params;
-  // const index = stocks.findIndex((s) => s.id === id);
-
-  // if (index === -1) {
-  //   return res.status(404).json({ success: false, message: "找不到該股票" });
-  // }
-
-  // // 更新內容並同步更新時間
-  // stocks[index] = {
-  //   ...stocks[index],
-  //   ...req.body,
-  //   updated_at: new Date().toISOString(),
-  // };
-
-  // res.json({ success: true, data: stocks[index] });
 });
 
 // 【DELETE】刪除股票
@@ -120,16 +88,6 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
-
-  // const { id } = req.params;
-  // const initialLength = stocks.length;
-  // stocks = stocks.filter((s) => s.id !== id);
-
-  // if (stocks.length === initialLength) {
-  //   return res.status(404).json({ success: false, message: "找不到該股票" });
-  // }
-
-  // res.json({ success: true, message: "刪除成功" });
 });
 
 module.exports = router;
