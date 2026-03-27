@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, message, Popconfirm, Space } from "antd";
+import { Table, Button, message, Popconfirm, Space, Flex } from "antd";
 import type { TableProps } from "antd";
 import { ConfigProvider } from "antd";
+import {
+  SearchOutlined,
+  SettingOutlined,
+  PlusSquareFilled,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 
 // 1. 定義資料與 API 回傳結構
@@ -102,6 +107,7 @@ const StockTable: React.FC = () => {
         body: JSON.stringify({ current_price: newPrice, stock_name }),
       });
       const result: ApiResponse<StockRecord> = await response.json();
+
       if (result.success) {
         message.success("更新成功");
         fetchStocks(); // 重新整理資料
@@ -170,15 +176,41 @@ const StockTable: React.FC = () => {
     >
       <div style={{ padding: 24 }}>
         <div style={{ marginBottom: 16 }}>
-          <Button type="default" onClick={fetchStocks}>
-            重整資料
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => handleAdd("2550", "我的2550股")}
-          >
-            新增資料
-          </Button>
+          <Space size={16}>
+            {/* 圓形按鈕 */}
+            <Button type="primary" shape="circle" icon={<SearchOutlined />} />
+            {/* 圓角矩形按鈕 */}
+            <Button icon={<SettingOutlined />}>設定</Button>
+            <Button
+              type="default"
+              onClick={fetchStocks}
+              icon={<SearchOutlined />}
+            >
+              重整資料
+            </Button>
+            <Button
+              color="cyan"
+              variant="solid"
+              onClick={() => handleAdd("2550", "我的2550股")}
+            >
+              <Flex align="center" gap="small">
+                <PlusSquareFilled style={{ fontSize: "20px" }} />
+                <span>新增資料</span>
+              </Flex>
+            </Button>
+            <Button
+              color="cyan"
+              variant="solid"
+              onClick={() => handleAdd("2550", "我的2550股")}
+              icon={
+                <PlusSquareFilled
+                  style={{ verticalAlign: "middle", fontSize: "20px" }}
+                />
+              }
+            >
+              新增資料
+            </Button>
+          </Space>
         </div>
         <Table
           columns={columns}
