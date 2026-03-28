@@ -32,15 +32,15 @@ router.get("/", async (req, res) => {
 
 // 【POST】新增資料到 PostgreSQL
 router.post("/", async (req, res) => {
-  const { stock_name, current_price } = req.body;
+  const { stock_id, stock_name, current_price } = req.body;
 
   try {
     const query = `
       INSERT INTO stocks (stock_symbol, stock_name, current_price) 
-      VALUES ('aa',$1, $2) 
+      VALUES ($1,$2,$3) 
       RETURNING *
     `;
-    const values = [stock_name, current_price];
+    const values = [stock_id, stock_name, current_price];
 
     const result = await db.query(query, values);
 
