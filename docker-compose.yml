@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # 1. 資料庫服務 (使用 PostgreSQL 18)
+  db:
+    image: postgres:18-alpine
+    container_name: mkdodos-db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=mkdodos
+    ports:
+      - "5433:5432" # 電腦用 5433 連進去，容器內是 5432
+    volumes:
+      - pgdata_v18:/var/lib/postgresql/data
+
+  # 2. 後端服務 (使用你剛 build 好的 mkdodos-backend)
+  server:
+    image: mkdodos-backend:latest
+    container_name: mkdodos-server
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db       # 這裡一定要寫 db，Docker 會自動指向上面的 db 服務
+      - DB_NAME=mkdodos
+      - DB_USER=postgres
+      - DB_PASSWORD=123
+      - DB_PORT=5432
+    depends_on:
+      - db               # 確保資料庫先開，後端再開
+
+  # 3. 前端服務 (使用你剛 build 好的 mkdodos-frontend)
+  client:
+    image: mkdodos-frontend:latest
+    container_name: mkdodos-client
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server           # 確保後端先開，前端再開
+    volumes:
+      - ./client:/usr/src/app         # 將本機資料夾映射到容器內
+      - /usr/src/app/node_modules            # 排除 node_modules (避免本機與 Linux 版本衝突)
+    environment:
+      - CHOKIDAR_USEPOLLING=true             # 確保 Docker 內的 Vite 能偵測到 Windows 的檔案變動  
+
+volumes:
+  pgdata_v18:            # 持久化儲存空間，刪除容器資料也不會丟失

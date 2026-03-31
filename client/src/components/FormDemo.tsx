@@ -17,6 +17,7 @@ const App: React.FC = () => {
     try {
       // 呼叫後端 API 接口
       console.log(values);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.post("/api/stocks", values);
 
       if (response.status === 200 || response.status === 201) {

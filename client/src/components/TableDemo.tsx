@@ -61,7 +61,7 @@ const StockTable: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // body: JSON.stringify(values),
-        body: JSON.stringify({ current_price, stock_name }),
+        body: JSON.stringify({ stock_id: "111", current_price, stock_name }),
       });
 
       const result = await response.json();
@@ -170,6 +170,7 @@ const StockTable: React.FC = () => {
           Table: {
             headerBg: "#f0f5ff",
             headerColor: "#003a8c",
+            borderColor: "#8c8c8c",
           },
         },
       }}
@@ -197,18 +198,6 @@ const StockTable: React.FC = () => {
                 <PlusSquareFilled style={{ fontSize: "20px" }} />
                 <span>新增資料</span>
               </Flex>
-            </Button>
-            <Button
-              color="cyan"
-              variant="solid"
-              onClick={() => handleAdd("2550", "我的2550股")}
-              icon={
-                <PlusSquareFilled
-                  style={{ verticalAlign: "middle", fontSize: "20px" }}
-                />
-              }
-            >
-              新增資料
             </Button>
           </Space>
         </div>
