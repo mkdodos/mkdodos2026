@@ -126,6 +126,7 @@ const StockTable: React.FC = () => {
     { title: "ID", dataIndex: "id" },
     { title: "代號", dataIndex: "stock_symbol", key: "stock_symbol" },
     { title: "股票名稱", dataIndex: "stock_name", key: "stock_name" },
+    { title: "股票名稱", dataIndex: "stock_name", key: "stock_name" },
     {
       title: "當前價格",
       dataIndex: "current_price",
@@ -134,7 +135,7 @@ const StockTable: React.FC = () => {
     },
     {
       title: "更新時間",
-      dataIndex: "updated_at",
+      dataIndex: "created_at",
       render: (date) => dayjs(date).format("YYYY-MM-DD HH:mm"),
     },
     {

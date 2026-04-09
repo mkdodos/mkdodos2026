@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. 資料庫服務 (使用 PostgreSQL 18)
   db:
@@ -9,10 +7,14 @@ services:
     environment:
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=mkdodos
+      # 💡 額外指定資料路徑，確保它會精準存入我們掛載的目錄
+      - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - "5433:5432" # 電腦用 5433 連進去，容器內是 5432
     volumes:
-      - pgdata_v18:/var/lib/postgresql/data
+    # 💡 改成這行：左邊是你電腦的路徑，右邊是容器內路徑
+      - ./postgres_data:/var/lib/postgresql
+      #- pgdata_v18:/var/lib/postgresql/data
 
   # 2. 後端服務 (使用你剛 build 好的 mkdodos-backend)
   server:
@@ -27,8 +29,13 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=123
       - DB_PORT=5432
+      - CHOKIDAR_USEPOLLING=true  # 👈 這是關鍵！讓監視器改用「輪詢」
     depends_on:
       - db               # 確保資料庫先開，後端再開
+    volumes:
+    - ./server-docker:/usr/src/app
+    - /usr/src/app/node_modules  
+    command: npx nodemon --legacy-watch index.js
 
   # 3. 前端服務 (使用你剛 build 好的 mkdodos-frontend)
   client:
@@ -45,5 +52,5 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true             # 確保 Docker 內的 Vite 能偵測到 Windows 的檔案變動  
 
-volumes:
-  pgdata_v18:            # 持久化儲存空間，刪除容器資料也不會丟失
+#volumes:
+ # pgdata_v18:            # 持久化儲存空間，刪除容器資料也不會丟失

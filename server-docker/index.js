@@ -8,12 +8,13 @@ const app = express();
 // 允許前端 React 連線
 app.use(cors());
 app.use(express.json()); // 這一行必須放在路由掛載之前
-
+// Docker Test
 const studentsRouter = require("./routes/students");
-
 const stocksRouter = require("./routes/stocks");
+const stockTradesRouter = require("./routes/stock_trades");
 
 app.use("/api/stocks", stocksRouter);
+app.use("/api/stock-trades", stockTradesRouter);
 
 app.use("/students", studentsRouter); //
 
