@@ -6,6 +6,10 @@ const port = 3000;
 // const host = "localhost";
 const host = "0.0.0.0";
 
+// 允許前端連線
+const cors = require("cors");
+app.use(cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -26,6 +30,7 @@ app.get("/api/items", async (req, res) => {
   }
 });
 
+// 新增資料
 app.post("/api/items", async (req, res) => {
   const { box_id, item_name, category } = req.body;
   try {
@@ -41,10 +46,18 @@ app.post("/api/items", async (req, res) => {
   }
 });
 
+// 更新資料
 app.put("/api/items", async (req, res) => {
   const { id, box_id, item_name, category } = req.body;
   try {
-    const sql = `UPDATE items SET item_name = '${item_name}',category='${category}' WHERE id=${id}; `;
+    // const sql = `UPDATE items SET item_name = '${item_name}',category='${category}' WHERE id=${id}; `;
+    const sql = `
+  UPDATE items 
+  SET 
+    item_name = '${item_name}',
+    category = '${category}' 
+  WHERE id = ${id};
+`;
     const result = await db.query(sql);
     res.status(200).json({
       success: true,
@@ -56,6 +69,7 @@ app.put("/api/items", async (req, res) => {
   }
 });
 
+// 刪除資料
 app.delete("/api/items", async (req, res) => {
   const { id } = req.body;
   try {
