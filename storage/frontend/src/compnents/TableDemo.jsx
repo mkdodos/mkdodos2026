@@ -1,4 +1,5 @@
-import { Table } from "antd";
+import { Table, Button, Space } from "antd";
+import { EditOutlined, EditFilled } from "@ant-design/icons";
 import { ConfigProvider } from "antd";
 function TableDemo({ dataSource }) {
   // dataIndex 對應資料欄位名
@@ -19,6 +20,21 @@ function TableDemo({ dataSource }) {
       dataIndex: "box_id",
       key: "box_id",
     },
+    // 編輯鈕
+    {
+      title: "編輯",
+      key: "edit",
+      render: (_, record) => (
+        <Space>
+          <Button
+            type="text"
+            icon={
+              <EditOutlined style={{ fontSize: "24px", color: "#1890ff" }} />
+            }
+          />
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -35,7 +51,7 @@ function TableDemo({ dataSource }) {
           },
         }}
       >
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table rowKey="id" dataSource={dataSource} columns={columns} />;
       </ConfigProvider>
       {/* <Table dataSource={dataSource} columns={columns} />; */}
     </div>
