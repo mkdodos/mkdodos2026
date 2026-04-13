@@ -43,21 +43,23 @@ app.post("/api/items", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("資料庫連線出錯");
+    console.log("SQL 語句:", err.sql);
   }
 });
 
 // 更新資料
-app.put("/api/items", async (req, res) => {
-  const { id, box_id, item_name, category } = req.body;
+app.put("/api/items/:id", async (req, res) => {
+  const { id } = req.params;
+  const { box_id, item_name, category } = req.body;
   try {
     // const sql = `UPDATE items SET item_name = '${item_name}',category='${category}' WHERE id=${id}; `;
     const sql = `
-  UPDATE items 
-  SET 
-    item_name = '${item_name}',
-    category = '${category}' 
-  WHERE id = ${id};
-`;
+      UPDATE items 
+      SET 
+        item_name = '${item_name}',
+        category = '${category}' 
+      WHERE id = ${id};
+    `;
     const result = await db.query(sql);
     res.status(200).json({
       success: true,
@@ -70,8 +72,8 @@ app.put("/api/items", async (req, res) => {
 });
 
 // 刪除資料
-app.delete("/api/items", async (req, res) => {
-  const { id } = req.body;
+app.delete("/api/items/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const sql = `DELETE FROM items WHERE id=${id}; `;
     const result = await db.query(sql);
