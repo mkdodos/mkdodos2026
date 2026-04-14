@@ -33,10 +33,8 @@ app.get("/api/items", async (req, res) => {
 // 新增資料
 app.post("/api/items", async (req, res) => {
   const { box_id, item_name, category } = req.body;
-  const finalBoxId = box_id === undefined || box_id === "" ? null : box_id;
-  // box_id !== undefined ? box_id : null;
   try {
-    const sql = `INSERT INTO items (box_id,item_name,category) VALUES (${finalBoxId},'${item_name}','${category}')
+    const sql = `INSERT INTO items (box_id,item_name,category) VALUES (${box_id},'${item_name}','${category}')
     RETURNING id
     `;
     const result = await db.query(sql);
