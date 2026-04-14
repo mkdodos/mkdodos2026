@@ -1,0 +1,82 @@
+import React from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Button,
+  Space,
+  Divider,
+} from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+
+const ItemModal = ({
+  open,
+  editingId,
+  onCancel,
+  onOk,
+  onDelete,
+  confirmLoading,
+  form,
+}) => {
+  return (
+    <Modal
+      title={editingId ? "編輯項目" : "新增項目"}
+      open={open}
+      onOk={onOk}
+      onCancel={onCancel}
+      confirmLoading={confirmLoading}
+      forceRender // 確保 Form 實例能連線
+      styles={{ body: { paddingBottom: "1px" } }}
+      footer={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            {editingId && (
+              <Popconfirm
+                title="確定要刪除嗎？"
+                onConfirm={() => onDelete(editingId)}
+                okButtonProps={{ danger: true }}
+              >
+                <Button danger icon={<DeleteOutlined />}>
+                  刪除
+                </Button>
+              </Popconfirm>
+            )}
+          </div>
+          <Space>
+            {/* <Button onClick={onCancel}>取消</Button> */}
+            <Button type="primary" onClick={onOk} loading={confirmLoading}>
+              儲存
+            </Button>
+          </Space>
+        </div>
+      }
+    >
+      <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
+        <Form.Item
+          name="item_name"
+          label="項目名稱"
+          rules={[{ required: true, message: "請輸入名稱" }]}
+        >
+          <Input placeholder="例如：心情" />
+        </Form.Item>
+        <Form.Item name="category" label="類別">
+          <Input placeholder="例如：情緒" />
+        </Form.Item>
+        <Form.Item name="box_id" label="Box ID">
+          <InputNumber min={1} style={{ width: "100%" }} />
+        </Form.Item>
+      </Form>
+      <Divider style={{ margin: "24px 0 0 0", borderColor: "#d9d9d9" }} />
+    </Modal>
+  );
+};
+
+export default ItemModal;
