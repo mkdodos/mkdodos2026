@@ -1,4 +1,6 @@
 const express = require("express");
+const boxRouter = require("./routes/boxes"); // 引入檔案
+const itemRouter = require("./routes/items"); // 引入檔案
 const db = require("./db"); // 引入剛才寫的連線模組
 const app = express();
 
@@ -12,86 +14,11 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use("/api/items", itemRouter);
+app.use("/api/boxes", boxRouter);
+
 app.get("/", (req, res) => {
   res.send("首頁123456");
-});
-
-// 取得資料
-app.get("/api/items", async (req, res) => {
-  try {
-    const result = await db.query("SELECT * FROM items ORDER BY id DESC");
-    res.json({
-      success: true,
-      data: result.rows,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("資料庫連線出錯");
-  }
-});
-
-// 新增資料
-app.post("/api/items", async (req, res) => {
-  const { box_id, item_name, category } = req.body;
-  const finalBoxId = box_id === undefined || box_id === "" ? null : box_id;
-  // box_id !== undefined ? box_id : null;
-  try {
-    const sql = `INSERT INTO items (box_id,item_name,category) VALUES (${finalBoxId},'${item_name}','${category}')
-    RETURNING id
-    `;
-    const result = await db.query(sql);
-    res.status(201).json({
-      success: true,
-      data: { sql },
-      id: result.rows[0].id,
-    });
-    console.log("SQL 語句:", sql);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("資料庫連線出錯");
-    console.log("SQL 語句:", err.sql);
-  }
-});
-
-// 更新資料
-app.put("/api/items/:id", async (req, res) => {
-  const { id } = req.params;
-  const { box_id, item_name, category } = req.body;
-  try {
-    // const sql = `UPDATE items SET item_name = '${item_name}',category='${category}' WHERE id=${id}; `;
-    const sql = `
-      UPDATE items 
-      SET 
-        item_name = '${item_name}',
-        category = '${category}',
-        box_id= ${box_id} 
-      WHERE id = ${id};
-    `;
-    const result = await db.query(sql);
-    res.status(200).json({
-      success: true,
-      data: { sql },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("資料庫連線出錯");
-  }
-});
-
-// 刪除資料
-app.delete("/api/items/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const sql = `DELETE FROM items WHERE id=${id}; `;
-    const result = await db.query(sql);
-    res.status(204).json({
-      success: true,
-      data: { sql },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("資料庫連線出錯");
-  }
 });
 
 app.listen(port, host, () => {
