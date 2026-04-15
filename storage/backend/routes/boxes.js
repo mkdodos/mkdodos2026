@@ -48,14 +48,13 @@ router.post("/", async (req, res) => {
 // 更新資料
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { box_id, item_name, category } = req.body;
+  const { name, location } = req.body;
   try {
     const sql = `
       UPDATE boxes 
       SET 
-        item_name = '${item_name}',
-        category = '${category}',
-        box_id= ${box_id} 
+        name = '${name}',
+        location = '${location}'        
       WHERE id = ${id};
     `;
     const result = await db.query(sql);
