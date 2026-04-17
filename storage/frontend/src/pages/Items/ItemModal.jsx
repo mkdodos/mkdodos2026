@@ -8,6 +8,7 @@ import {
   Button,
   Space,
   Divider,
+  Select,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -19,7 +20,14 @@ const ItemModal = ({
   onDelete,
   confirmLoading,
   form,
+  boxes, // 從 props 接收 boxes 清單
 }) => {
+  const boxOptions = boxes.map((box) => ({
+    // 這裡決定選單內看到的文字樣式
+    label: `盒子 ${box.id} - ${box.name || ""}`,
+    value: box.id,
+  }));
+
   return (
     <Modal
       title={editingId ? "編輯項目" : "新增項目"}
@@ -61,6 +69,21 @@ const ItemModal = ({
     >
       <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
         <Form.Item
+          name="box_id"
+          label="選擇盒子"
+          rules={[{ required: true, message: "請選擇一個盒子" }]}
+        >
+          <Select
+            placeholder="請選擇盒編號"
+            // 將搜尋設定寫在 showSearch 物件中
+            showSearch={{
+              optionFilterProp: "label", // 指定搜尋 options 裡的 label 欄位
+            }}
+            options={boxOptions}
+          ></Select>
+        </Form.Item>
+
+        <Form.Item
           name="item_name"
           label="項目名稱"
           rules={[{ required: true, message: "請輸入名稱" }]}
@@ -70,9 +93,9 @@ const ItemModal = ({
         <Form.Item name="category" label="類別">
           <Input placeholder="例如：情緒" />
         </Form.Item>
-        <Form.Item name="box_id" label="Box ID">
+        {/* <Form.Item name="box_id" label="Box ID">
           <InputNumber min={1} style={{ width: "100%" }} />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
       <Divider style={{ margin: "24px 0 0 0", borderColor: "#d9d9d9" }} />
     </Modal>

@@ -7,7 +7,8 @@ import ItemModal from "./ItemModal"; // 抽離的 Modal
 const { Content } = Layout;
 
 function Index() {
-  const { data, loading, confirmLoading, deleteItem, saveItem } = useItems();
+  const { data, loading, confirmLoading, deleteItem, saveItem, boxes } =
+    useItems();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form] = Form.useForm();
@@ -36,8 +37,10 @@ function Index() {
   const columns = [
     { title: "ID", dataIndex: "id", width: 80 },
     { title: "項目", dataIndex: "item_name" },
-    { title: "類別", dataIndex: "category" },
+    // { title: "類別", dataIndex: "category" },
+    // { title: "類別", dataIndex: "category" },
     { title: "盒編號", dataIndex: "box_id" },
+    { title: "盒名", dataIndex: "box_name" },
     {
       title: "操作",
       render: (_, record) => (
@@ -86,6 +89,7 @@ function Index() {
           onOk={handleOk}
           onCancel={() => setIsModalOpen(false)}
           onDelete={handleDelete}
+          boxes={boxes}
         />
       </Content>
     </Layout>

@@ -5,7 +5,17 @@ const db = require("../db"); // 引入剛才寫的連線模組
 // 取得資料
 router.get("/", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM items ORDER BY id DESC");
+    const sql = ` SELECT           
+          items.id ,
+          items.item_name,
+          boxes.name as box_name,
+          box_id
+      FROM items
+      INNER JOIN boxes ON items.box_id = boxes.id
+      ORDER BY id DESC
+    `;
+    // const result = await db.query("SELECT * FROM items ORDER BY id DESC");
+    const result = await db.query(sql);
     res.json({
       success: true,
       data: result.rows,
