@@ -7,6 +7,7 @@ router.get("/", async (req, res) => {
   let sql = ` SELECT           
           items.id ,
           items.item_name,
+          items.category,
           boxes.name as box_name,
           box_id
       FROM items
@@ -22,15 +23,22 @@ router.get("/", async (req, res) => {
     // 關鍵字搜尋多個欄位
     if (q) {
       // 使用 %${q}% 進行包含搜尋
-      sql += ` WHERE items.item_name ILIKE $1 
-               OR items.category ILIKE $2 
-               OR boxes.name ILIKE $3 `;
+      // sql += ` WHERE items.item_name ILIKE $1
+      //          OR items.category ILIKE $2
+      //          OR boxes.name ILIKE $3 `;
+      // const searchTerm = `%${q}%`;
+      // params = [searchTerm, searchTerm, searchTerm];
+      sql += ` WHERE items.item_name ILIKE $1               
+               `;
       const searchTerm = `%${q}%`;
-      params = [searchTerm, searchTerm, searchTerm];
+      params = [searchTerm];
     }
 
     // 加上排序，讓最新的資料排在前面
     sql += " ORDER BY items.id DESC";
+
+    console.log("SQL:", sql);
+    console.log("Params:", params);
 
     const result = await db.query(sql, params);
     res.json({

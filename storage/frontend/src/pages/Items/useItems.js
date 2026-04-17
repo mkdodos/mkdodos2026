@@ -22,10 +22,14 @@ export const useItems = () => {
   };
 
   // 1. 取得資料
-  const getItems = async () => {
+  const getItems = async (searchKeyword = "") => {
     setLoading(true);
     try {
-      const response = await axios.get(API_BASE);
+      // const response = await axios.get(API_BASE);
+      // 使用 axios 的 params 設定，它會自動幫你處理 ?q= 轉義
+      const response = await axios.get(API_BASE, {
+        params: { q: searchKeyword },
+      });
       setData(response.data.data);
     } catch (error) {
       message.error("無法取得資料");
@@ -87,5 +91,13 @@ export const useItems = () => {
     }
   };
 
-  return { data, boxes, loading, confirmLoading, deleteItem, saveItem };
+  return {
+    data,
+    getItems,
+    boxes,
+    loading,
+    confirmLoading,
+    deleteItem,
+    saveItem,
+  };
 };

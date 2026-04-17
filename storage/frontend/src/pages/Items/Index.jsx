@@ -7,8 +7,15 @@ import ItemModal from "./ItemModal"; // 抽離的 Modal
 const { Content } = Layout;
 
 function Index() {
-  const { data, loading, confirmLoading, deleteItem, saveItem, boxes } =
-    useItems();
+  const {
+    data,
+    getItems,
+    loading,
+    confirmLoading,
+    deleteItem,
+    saveItem,
+    boxes,
+  } = useItems();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form] = Form.useForm();
@@ -16,14 +23,14 @@ function Index() {
 
   // 核心：過濾資料邏輯
   // 使用 useMemo 確保只有在 data 或 searchText 改變時才重新過濾
-  const filteredData = useMemo(() => {
-    return data.filter(
-      (item) =>
-        item.item_name.toLowerCase().includes(searchText.toLowerCase()) ||
-        (item.category &&
-          item.category.toLowerCase().includes(searchText.toLowerCase())),
-    );
-  }, [data, searchText]);
+  // const filteredData = useMemo(() => {
+  //   return data.filter(
+  //     (item) =>
+  //       item.item_name.toLowerCase().includes(searchText.toLowerCase()) ||
+  //       (item.category &&
+  //         item.category.toLowerCase().includes(searchText.toLowerCase())),
+  //   );
+  // }, [data, searchText]);
 
   // 開啟彈窗邏輯
   const openModal = (record = null) => {
@@ -49,7 +56,7 @@ function Index() {
   const columns = [
     { title: "ID", dataIndex: "id", width: 80 },
     { title: "項目", dataIndex: "item_name" },
-    // { title: "類別", dataIndex: "category" },
+    { title: "類別", dataIndex: "category" },
     // { title: "類別", dataIndex: "category" },
     { title: "盒編號", dataIndex: "box_id" },
     { title: "盒名", dataIndex: "box_name" },
@@ -64,6 +71,10 @@ function Index() {
       ),
     },
   ];
+
+  const handleSearch = () => {
+    getItems(searchText); // 呼叫 Hook 裡的函式並傳入關鍵字
+  };
 
   return (
     <Layout style={{ minHeight: "100vh", padding: "24px" }}>
@@ -81,6 +92,7 @@ function Index() {
             prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
             style={{ width: 300 }}
             allowClear
+            onPressEnter={handleSearch} // 按下 Enter 直接搜
             onChange={(e) => setSearchText(e.target.value)} // 更新關鍵字
           />
 
@@ -94,8 +106,8 @@ function Index() {
         </div>
 
         <Table
-          // dataSource={data}
-          dataSource={filteredData}
+          dataSource={data}
+          // dataSource={filteredData}
           columns={columns}
           rowKey="id"
           loading={loading}
