@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Table, Button, Layout, Form } from "antd";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { useState, useMemo } from "react"; // 引入 useMemo 效能優化
+import { Table, Button, Layout, Form, Input } from "antd";
+import { PlusOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { useItems } from "./useItems"; // 抽離的 Hook
 import ItemModal from "./ItemModal"; // 抽離的 Modal
 
@@ -12,6 +12,18 @@ function Index() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form] = Form.useForm();
+  const [searchText, setSearchText] = useState(""); // 搜尋文字狀態
+
+  // 核心：過濾資料邏輯
+  // 使用 useMemo 確保只有在 data 或 searchText 改變時才重新過濾
+  const filteredData = useMemo(() => {
+    return data.filter(
+      (item) =>
+        item.item_name.toLowerCase().includes(searchText.toLowerCase()) ||
+        (item.category &&
+          item.category.toLowerCase().includes(searchText.toLowerCase())),
+    );
+  }, [data, searchText]);
 
   // 開啟彈窗邏輯
   const openModal = (record = null) => {
@@ -61,8 +73,17 @@ function Index() {
             display: "flex",
             justifyContent: "flex-end",
             marginBottom: 16,
+            gap: 16,
           }}
         >
+          <Input
+            placeholder="搜尋項目名稱或類別..."
+            prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+            style={{ width: 300 }}
+            allowClear
+            onChange={(e) => setSearchText(e.target.value)} // 更新關鍵字
+          />
+
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -73,7 +94,8 @@ function Index() {
         </div>
 
         <Table
-          dataSource={data}
+          // dataSource={data}
+          dataSource={filteredData}
           columns={columns}
           rowKey="id"
           loading={loading}

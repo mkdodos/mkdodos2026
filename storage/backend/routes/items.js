@@ -4,24 +4,43 @@ const db = require("../db"); // 引入剛才寫的連線模組
 
 // 取得資料
 router.get("/", async (req, res) => {
-  try {
-    const sql = ` SELECT           
+  let sql = ` SELECT           
           items.id ,
           items.item_name,
           boxes.name as box_name,
           box_id
       FROM items
-      INNER JOIN boxes ON items.box_id = boxes.id
-      ORDER BY id DESC
+      LEFT JOIN boxes ON items.box_id = boxes.id      
     `;
+  try {
+    const { q } = req.query; // 取得 ?q= 內容
+
     // const result = await db.query("SELECT * FROM items ORDER BY id DESC");
-    const result = await db.query(sql);
+    let params = [];
+
+    // 如果有搜尋關鍵字，加上 WHERE 子句
+    // 關鍵字搜尋多個欄位
+    if (q) {
+      // 使用 %${q}% 進行包含搜尋
+      sql += ` WHERE items.item_name ILIKE $1 
+               OR items.category ILIKE $2 
+               OR boxes.name ILIKE $3 `;
+      const searchTerm = `%${q}%`;
+      params = [searchTerm, searchTerm, searchTerm];
+    }
+
+    // 加上排序，讓最新的資料排在前面
+    sql += " ORDER BY items.id DESC";
+
+    const result = await db.query(sql, params);
     res.json({
       success: true,
+      // sql,
       data: result.rows,
     });
   } catch (err) {
     console.error(err);
+    console.error(sql);
     res.status(500).send("資料庫連線出錯");
   }
 });
