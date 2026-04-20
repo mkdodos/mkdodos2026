@@ -51,14 +51,23 @@ export default function Index() {
   };
 
   return (
-    <div>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={() => openModal()}
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: 16,
+          gap: 16,
+        }}
       >
-        新增項目
-      </Button>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => openModal()}
+        >
+          新增項目
+        </Button>
+      </div>
       <Table
         dataSource={data}
         columns={columns}
@@ -74,6 +83,6 @@ export default function Index() {
         editingId={editingId}
         onDelete={handleDelete}
       />
-    </div>
+    </>
   );
 }

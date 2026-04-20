@@ -24,7 +24,7 @@ const ItemModal = ({
 }) => {
   const boxOptions = boxes.map((box) => ({
     // 這裡決定選單內看到的文字樣式
-    label: `盒子 ${box.id} - ${box.name || ""}`,
+    label: `${box.name || ""}`,
     value: box.id,
   }));
 

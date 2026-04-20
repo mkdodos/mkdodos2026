@@ -58,14 +58,21 @@ function Index() {
     { title: "項目", dataIndex: "item_name" },
     { title: "類別", dataIndex: "category" },
     // { title: "類別", dataIndex: "category" },
-    { title: "盒編號", dataIndex: "box_id" },
+    // { title: "盒編號", dataIndex: "box_id" },
     { title: "盒名", dataIndex: "box_name" },
     {
       title: "操作",
       render: (_, record) => (
         <Button
           type="text"
-          icon={<EditOutlined color="#1890ff" />}
+          icon={
+            <EditOutlined
+              style={{
+                fontSize: "22px", // 調整大小
+                color: "#1890ff",
+              }}
+            />
+          }
           onClick={() => openModal(record)}
         />
       ),
@@ -77,56 +84,58 @@ function Index() {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", padding: "24px" }}>
-      <Content style={{ background: "#fff", padding: 24, borderRadius: 8 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: 16,
-            gap: 16,
-          }}
+    <>
+      {/* <Layout style={{ minHeight: "100vh", padding: "24px" }}> */}
+      {/* <Content style={{ background: "#fff", padding: 24, borderRadius: 8 }}> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: 16,
+          gap: 16,
+        }}
+      >
+        <Input
+          placeholder="搜尋項目名稱或類別..."
+          prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          style={{ width: 300 }}
+          allowClear
+          onPressEnter={handleSearch} // 按下 Enter 直接搜
+          onChange={(e) => setSearchText(e.target.value)} // 更新關鍵字
+        />
+
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => openModal()}
         >
-          <Input
-            placeholder="搜尋項目名稱或類別..."
-            prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-            style={{ width: 300 }}
-            allowClear
-            onPressEnter={handleSearch} // 按下 Enter 直接搜
-            onChange={(e) => setSearchText(e.target.value)} // 更新關鍵字
-          />
+          新增項目
+        </Button>
+      </div>
 
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => openModal()}
-          >
-            新增項目
-          </Button>
-        </div>
+      <Table
+        dataSource={data}
+        // dataSource={filteredData}
+        columns={columns}
+        rowKey="id"
+        loading={loading}
+        pagination={false}
+      />
 
-        <Table
-          dataSource={data}
-          // dataSource={filteredData}
-          columns={columns}
-          rowKey="id"
-          loading={loading}
-          pagination={false}
-        />
-
-        {/* 抽離出來的 Modal 元件 */}
-        <ItemModal
-          open={isModalOpen}
-          editingId={editingId}
-          form={form}
-          confirmLoading={confirmLoading}
-          onOk={handleOk}
-          onCancel={() => setIsModalOpen(false)}
-          onDelete={handleDelete}
-          boxes={boxes}
-        />
-      </Content>
-    </Layout>
+      {/* 抽離出來的 Modal 元件 */}
+      <ItemModal
+        open={isModalOpen}
+        editingId={editingId}
+        form={form}
+        confirmLoading={confirmLoading}
+        onOk={handleOk}
+        onCancel={() => setIsModalOpen(false)}
+        onDelete={handleDelete}
+        boxes={boxes}
+      />
+      {/* </Content> */}
+      {/* </Layout> */}
+    </>
   );
 }
 
