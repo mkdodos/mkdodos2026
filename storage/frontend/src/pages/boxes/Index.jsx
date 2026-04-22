@@ -65,7 +65,7 @@ export default function Index() {
           icon={<PlusOutlined />}
           onClick={() => openModal()}
         >
-          新增項目
+          新增盒子
         </Button>
       </div>
       <Table
