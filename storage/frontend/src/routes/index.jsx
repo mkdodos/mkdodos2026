@@ -1,6 +1,7 @@
 // src/routes/index.js
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import BasicLayout from "../layouts/BasicLayout";
 
 import Items from "../pages/Items/Index";
 import Boxes from "../pages/boxes/Index";
@@ -9,7 +10,7 @@ import Cates from "../pages/cates/Index";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />, // 這是我們剛剛聊的佈局骨架
+    element: <BasicLayout />, // 佈局骨架
     children: [
       {
         path: "items",

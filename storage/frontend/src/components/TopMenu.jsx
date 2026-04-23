@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { Menu } from "antd";
+import { Menu, ConfigProvider } from "antd";
 import {
   DashboardOutlined,
   DatabaseOutlined,
@@ -18,18 +18,26 @@ function TopMenu() {
     { key: "/boxes", icon: <AppstoreOutlined />, label: "盒子管理" },
   ];
   return (
-    <div>
-      <div>
-        <Menu
-          mode="horizontal"
-          onClick={({ key }) => navigate(key)}
-          // theme="dark"
-          // selectedKeys={[current]} // 這裡傳入陣列，控制選中項目
-          items={menuItems}
-          style={{ height: "100%", borderRight: 0 }}
-        />
-      </div>
-    </div>
+    // <ConfigProvider
+    //   theme={{
+    //     components: {
+    //       Menu: {
+    //         darkItemSelectedBg: "transparent", // 讓選中的藍色背景透明
+    //         darkItemHoverBg: "transparent", // 讓滑鼠移上去的背景也透明
+    //       },
+    //     },
+    //   }}
+    // >
+    <Menu
+      mode="horizontal"
+      onClick={({ key }) => navigate(key)}
+      // theme="dark"
+      theme="light"
+      // selectedKeys={[current]} // 這裡傳入陣列，控制選中項目
+      items={menuItems}
+      style={{ flex: 1, minWidth: 0, height: "100%" }}
+    />
+    // </ConfigProvider>
   );
 }
 

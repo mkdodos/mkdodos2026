@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Button, Layout, Form } from "antd";
+import { Table, Button, Layout, Form, ConfigProvider } from "antd";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import { useBoxes } from "./useBoxes"; // 抽離的 Hook
 import BoxModal from "./BoxModal";
@@ -18,7 +18,14 @@ export default function Index() {
       render: (_, record) => (
         <Button
           type="text"
-          icon={<EditOutlined color="#1890ff" />}
+          icon={
+            <EditOutlined
+              style={{
+                fontSize: "22px", // 調整大小
+                color: "#2C3947",
+              }}
+            />
+          }
           onClick={() => openModal(record)}
         />
       ),
@@ -68,13 +75,31 @@ export default function Index() {
           新增盒子
         </Button>
       </div>
-      <Table
-        dataSource={data}
-        columns={columns}
-        rowKey="id"
-        loading={loading}
-        pagination={false}
-      />
+
+      <ConfigProvider
+        theme={{
+          components: {
+            Table: {
+              // 設定標題列背景色
+              headerBg: "#8CC7C4",
+              // 如果需要，也可以設定標題文字顏色
+              headerColor: "rgba(0, 0, 0, 0.85)",
+              // 設定標題列圓角（可選）
+              headerBorderRadius: 4,
+              borderColor: "#8CC7C4",
+            },
+          },
+        }}
+      >
+        <Table
+          dataSource={data}
+          columns={columns}
+          rowKey="id"
+          loading={loading}
+          pagination={false}
+        />
+      </ConfigProvider>
+
       <BoxModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
