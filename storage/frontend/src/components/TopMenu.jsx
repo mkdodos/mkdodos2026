@@ -16,6 +16,7 @@ function TopMenu() {
     { key: "/cates", icon: <DatabaseOutlined />, label: "類別管理" },
     { key: "/items", icon: <ContainerOutlined />, label: "項目管理" },
     { key: "/boxes", icon: <AppstoreOutlined />, label: "盒子管理" },
+    { key: "/customers", icon: <AppstoreOutlined />, label: "客戶管理" },
   ];
   return (
     // <ConfigProvider

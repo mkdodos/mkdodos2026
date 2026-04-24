@@ -6,6 +6,7 @@ import BasicLayout from "../layouts/BasicLayout";
 import Items from "../pages/Items/Index";
 import Boxes from "../pages/boxes/Index";
 import Cates from "../pages/cates/Index";
+import Customers from "../pages/customers/Index";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "boxes",
         element: <Boxes />,
+      },
+      {
+        path: "customers",
+        element: <Customers />,
       },
     ],
   },
