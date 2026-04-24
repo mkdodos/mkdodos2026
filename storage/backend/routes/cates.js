@@ -39,4 +39,42 @@ router.post("/", async (req, res) => {
   }
 });
 
+// 更新資料
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { cate_name } = req.body;
+  try {
+    const sql = `
+      UPDATE cates 
+      SET 
+        cate_name = '${cate_name}'       
+      WHERE id = ${id};
+    `;
+    const result = await db.query(sql);
+    res.status(200).json({
+      success: true,
+      data: { sql },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("資料庫連線出錯");
+  }
+});
+
+// 刪除資料
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const sql = `DELETE FROM cates WHERE id=${id}; `;
+    const result = await db.query(sql);
+    res.status(204).json({
+      success: true,
+      data: { sql },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("資料庫連線出錯");
+  }
+});
+
 module.exports = router;
