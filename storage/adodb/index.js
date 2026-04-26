@@ -22,6 +22,7 @@ async function migrateData() {
 
     // 從 Access 讀取所有客戶資料
     const customers = await access.query("SELECT * FROM 客戶資料");
+    console.log(JSON.stringify(customers, null, 2));
     console.log(`讀取成功，共 ${customers.length} 筆資料。`);
 
     console.log("開始寫入 PostgreSQL...");
@@ -29,12 +30,12 @@ async function migrateData() {
     // 使用迴圈逐筆新增至 PostgreSQL
     for (const row of customers) {
       const insertSql = `
-        INSERT INTO customers (cust_id, cust_name) 
-        VALUES ($1, $2)
+        INSERT INTO customers (cust_id, cust_name,tel) 
+        VALUES ($1, $2,$3)
         ; 
       `;
       // row.客戶編號 與 row.客戶名稱 需對應 Access 中的欄位名稱
-      const values = [row.客戶編號, row.客戶名稱];
+      const values = [row.客戶編號, row.客戶名稱, row.電話];
 
       await pgPool.query(insertSql, values);
     }
