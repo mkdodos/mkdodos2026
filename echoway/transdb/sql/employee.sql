@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS employees;
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,           
+    emp_id VARCHAR(255) ,      
+    emp_name VARCHAR(255) NOT NULL,   
+    tel VARCHAR(50),                
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 建立時間
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 更新時間
+);

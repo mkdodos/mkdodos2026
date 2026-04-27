@@ -1,0 +1,31 @@
+const schemaMap = [
+  {
+    accessTable: "stocks",
+    pgTable: "stocks",
+    // 格式： { "PG 欄位名": "Access 欄位名" }
+    columns: {
+      circle1: "Circle",
+      note_text: "NoteText"     
+    }
+  },
+  {
+    accessTable: "員工基本資料",
+    pgTable: "employees",
+    columns: {
+      emp_id: "工作人員編號",
+      emp_name: "姓名"      
+    },
+    dateFields: []
+  },
+  {
+    accessTable: "費用表",
+    pgTable: "fees",
+    columns: {
+      fee_date: "日期",
+      fee_name: "品名"      
+    },
+    dateFields: ["fee_date"] // 額外標記哪些欄位是日期
+  }
+];
+
+module.exports = schemaMap;
