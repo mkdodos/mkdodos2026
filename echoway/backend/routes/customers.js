@@ -10,7 +10,8 @@ router.get("/", async (req, res) => {
     const data = await helper.getAll(TABLE_NAME);
     res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ success: false, msg: "讀取失敗" });
+    console.log(err)
+    res.status(500).json({ success: false, msg: err });
   }
 });
 
