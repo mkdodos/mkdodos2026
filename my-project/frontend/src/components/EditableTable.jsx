@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Table, Form, Typography, Popconfirm, message, Button } from "antd";
+import {
+  Table,
+  Form,
+  Typography,
+  Popconfirm,
+  message,
+  Button,
+  Space,
+} from "antd";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { EditableCell } from "./EditableCell"; // 從你存放的地方引入
@@ -160,19 +168,26 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <Space size="middle">
             <Typography.Link
               onClick={() => save(record.id)}
               style={{ marginRight: 8 }}
             >
               儲存
             </Typography.Link>
-            <Popconfirm title="確定取消？" onConfirm={cancel}>
+            {/* 修改處：移除 Popconfirm，直接綁定 onClick */}
+            <a
+              onClick={cancel}
+              style={{ color: "#8c8c8c" }} // Ant Design 預設中性灰色
+            >
+              取消
+            </a>
+            {/* <Popconfirm title="確定取消？" onConfirm={cancel}>
               <a>取消</a>
-            </Popconfirm>
-          </span>
+            </Popconfirm> */}
+          </Space>
         ) : (
-          <span>
+          <Space size="middle">
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -190,7 +205,7 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
                 刪除
               </Typography.Link>
             </Popconfirm>
-          </span>
+          </Space>
         );
       },
     },

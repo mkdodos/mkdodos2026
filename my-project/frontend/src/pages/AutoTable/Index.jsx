@@ -4,19 +4,19 @@ import EditableTable from "../../components/EditableTable";
 function Index() {
   const columns = [
     {
-      title: "姓名",
+      title: "編號",
       dataIndex: "id",
       width: "25%",
     },
     {
-      title: "姓名",
+      title: "箱名",
       dataIndex: "name",
       width: "25%",
       editable: true,
       required: true,
     },
     {
-      title: "年齡",
+      title: "地點",
       dataIndex: "location",
       width: "15%",
       editable: true,
@@ -26,9 +26,9 @@ function Index() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>員工管理系統</h2>
+      <h2>收納管理系統</h2>
       <EditableTable
-        apiEndpoint="http://localhost:3000/api/boxes"
+        apiEndpoint="http://192.168.0.10:3000/api/boxes"
         // apiEndpoint="https://api.example.com/users"
         columnsConfig={columns}
       />

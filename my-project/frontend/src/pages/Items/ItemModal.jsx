@@ -93,9 +93,20 @@ const ItemModal = ({
         <Form.Item name="category" label="類別">
           <Input placeholder="例如：情緒" />
         </Form.Item>
-        {/* <Form.Item name="box_id" label="Box ID">
-          <InputNumber min={1} style={{ width: "100%" }} />
-        </Form.Item> */}
+        <Form.Item name="category" label="類別下拉">
+          <Select
+            options={[
+              {
+                label: "選項一",
+                value: "選項值1",
+              },
+              {
+                label: "選項二",
+                value: "選項值2",
+              },
+            ]}
+          ></Select>
+        </Form.Item>
       </Form>
       <Divider style={{ margin: "24px 0 0 0", borderColor: "#d9d9d9" }} />
     </Modal>
