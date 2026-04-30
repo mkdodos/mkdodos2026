@@ -2,9 +2,11 @@ import { useState, useMemo } from "react"; // 引入 useMemo 效能優化
 import { Table, Button, Layout, Form, Input } from "antd";
 import { PlusOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { useItems } from "./useItems"; // 抽離的 Hook
+
 import ItemModal from "./ItemModal"; // 抽離的 Modal
 
 const { Content } = Layout;
+import MobileDataCards from "../../components/MobileDataList";
 
 function Index() {
   const {
@@ -113,9 +115,10 @@ function Index() {
         </Button>
       </div>
 
+      <MobileDataCards dataSource={data} />
+
       <Table
         dataSource={data}
-        // dataSource={filteredData}
         columns={columns}
         rowKey="id"
         loading={loading}

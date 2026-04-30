@@ -12,6 +12,8 @@ import {
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
+import { useCates } from "../cates/useCates";
+
 const ItemModal = ({
   open,
   editingId,
@@ -27,6 +29,16 @@ const ItemModal = ({
     label: `${box.name || ""}`,
     value: box.id,
   }));
+
+  // 取得所有類別
+  const { data: cates } = useCates();
+
+  const cateOptions = cates.map((obj) => ({
+    label: `${obj.cate_name || ""}`,
+    value: obj.cate_name,
+  }));
+
+  // console.log(cates);
 
   return (
     <Modal
@@ -90,22 +102,11 @@ const ItemModal = ({
         >
           <Input placeholder="例如：心情" />
         </Form.Item>
-        <Form.Item name="category" label="類別">
+        {/* <Form.Item name="category" label="類別">
           <Input placeholder="例如：情緒" />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="category" label="類別下拉">
-          <Select
-            options={[
-              {
-                label: "選項一",
-                value: "選項值1",
-              },
-              {
-                label: "選項二",
-                value: "選項值2",
-              },
-            ]}
-          ></Select>
+          <Select options={cateOptions}></Select>
         </Form.Item>
       </Form>
       <Divider style={{ margin: "24px 0 0 0", borderColor: "#d9d9d9" }} />

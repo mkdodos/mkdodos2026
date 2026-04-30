@@ -37,15 +37,11 @@ const BasicLayout = () => {
           style={{ flex: 1, minWidth: 0 }}
         /> */}
       </Header>
-      <Content style={{ padding: "0 48px" }}>
-        {/* <Breadcrumb
-          style={{ margin: "16px 0" }}
-          items={[{ title: "Home" }, { title: "List" }, { title: "App" }]}
-        /> */}
+      <Content style={{ padding: "0 0px" }}>
         <div
           style={{
             background: colorBgContainer,
-            minHeight: 280,
+            minHeight: 28,
             padding: 24,
             marginTop: 26,
             borderRadius: borderRadiusLG,

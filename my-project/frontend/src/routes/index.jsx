@@ -8,6 +8,7 @@ import Boxes from "../pages/boxes/Index";
 import Cates from "../pages/cates/Index";
 
 import AutoTable from "../pages/AutoTable/Index";
+import MobileDataList from "../components/MobileDataList";
 
 const router = createBrowserRouter([
   {
@@ -26,11 +27,14 @@ const router = createBrowserRouter([
         path: "boxes",
         element: <Boxes />,
       },
-
       {
         path: "auto-table",
         element: <AutoTable />,
       },
+      // {
+      //   path: "mobile-list",
+      //   element: <MobileDataList />,
+      // },
     ],
   },
 ]);
