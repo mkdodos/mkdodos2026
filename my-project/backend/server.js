@@ -4,6 +4,7 @@ const itemRouter = require("./routes/items"); // 引入檔案
 const cateRouter = require("./routes/cates"); // 引入檔案
 const customerRouter = require("./routes/customers"); // 引入檔案
 const stockRouter = require("./routes/stocks");
+const fundRouter = require("./routes/funds");
 
 const db = require("./db"); // 引入剛才寫的連線模組
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/boxes", boxRouter);
 app.use("/api/cates", cateRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/stocks", stockRouter);
+app.use("/api/funds", fundRouter);
 
 app.get("/", (req, res) => {
   res.send("首頁123456");

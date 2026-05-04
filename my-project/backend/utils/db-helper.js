@@ -32,8 +32,9 @@ const helper = {
     const setQuery = keys.map((key, i) => `${key} = $${i + 1}`).join(", "); // "name=$1, sort=$2"
 
     const sql = `UPDATE ${tableName} SET ${setQuery} WHERE id = $${keys.length + 1} RETURNING *`;
-    const { rows } = await db.json(sql, [...values, id]);
+    const { rows } = await db.query(sql, [...values, id]);
     return rows[0];
+    // return sql;
   },
 
   // 刪除資料
