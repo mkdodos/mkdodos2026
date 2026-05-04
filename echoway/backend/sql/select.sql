@@ -1,1 +1,1 @@
-select * from fees where fee_name='馬克'
+select * from stock_need

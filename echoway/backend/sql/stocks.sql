@@ -7,3 +7,11 @@ CREATE TABLE stocks (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 建立時間
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 更新時間
 );
+
+
+DROP TABLE IF EXISTS stock_need;
+
+CREATE TABLE stock_need (
+    id SERIAL PRIMARY KEY,           -- 自動遞增的 ID
+    emp_id VARCHAR(255)          
+);

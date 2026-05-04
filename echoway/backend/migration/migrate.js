@@ -1,14 +1,21 @@
 const ADODB = require("node-adodb");
-const { Pool } = require("pg");
+const pgp = require("pg-promise")({
+  capSQL: true, // 在產生 SQL 時會自動處理大寫欄位引號等問題
+});
 const schemaMap = require("./tablesConfig");
 
+// 來源資料庫
+const sourceDB = "D:\\Dev\\echoway2026\\stocks.mdb";
+// const sourceDB = "C:\\database\\後端server2000.mdb";
+
 // --- 1. 連線設定 ---
-const accessDbPath = "C:\\database\\後端server2000.mdb";
+// const access = ADODB.open(`Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\database\\後端server2000.mdb;`);
+
 const access = ADODB.open(
-  `Provider=Microsoft.Jet.OLEDB.4.0;Data Source=${accessDbPath};`
+  `Provider=Microsoft.Jet.OLEDB.4.0;Data Source=${sourceDB};`,
 );
 
-const pgPool = new Pool({
+const db = pgp({
   user: "postgres",
   host: "localhost",
   database: "echoway",
@@ -16,79 +23,69 @@ const pgPool = new Pool({
   port: 5432,
 });
 
-// --- 2. 核心遷移工具函式 ---
 async function migrateTable(config) {
   const { accessTable, pgTable, columns, dateFields = [] } = config;
 
-  console.log(`\n--------------------------------------------`);
-  console.log(`[開始遷移] Access: ${accessTable} => PG: ${pgTable}`);
+  console.log(`\n>>> 正在處理: ${accessTable} -> ${pgTable}`);
+
+  // --- A. 動態生成 Access SQL (格式化日期解決差一天問題) ---
+  const selectFields = Object.keys(columns)
+    .map((pgCol) => {
+      const accessCol = columns[pgCol];
+      if (dateFields.includes(pgCol)) {
+        // 在 Access 端直接轉字串
+        return `Format([${accessCol}], 'yyyy-mm-dd') AS [${accessCol}]`;
+      }
+      return `[${accessCol}] AS [${accessCol}]`;
+    })
+    .join(", ");
+
+  const accessSql = `SELECT ${selectFields} FROM [${accessTable}]`;
 
   try {
-    // A. 讀取 Access 資料
-    const rows = await access.query(`SELECT * FROM [${accessTable}]`);
-    console.log(`   讀取成功: 共 ${rows.length} 筆`);
+    // B. 讀取 Access 資料
+    const rows = await access.query(accessSql);
+    if (rows.length === 0) return console.log("   無資料，跳過。");
+    console.log(`   讀取成功: ${rows.length} 筆`);
 
-    if (rows.length === 0) {
-      console.log(`   此表無資料，跳過。`);
-      return;
-    }
+    // C. 清空 PG 資料
+    await db.none(`TRUNCATE TABLE ${pgTable} RESTART IDENTITY CASCADE`);
 
-    // B. 清空 PostgreSQL 目的地表
-    console.log(`   正在清空 PG 資料表...`);
-    await pgPool.query(`TRUNCATE TABLE ${pgTable} RESTART IDENTITY CASCADE`);
+    // D. 資料格式轉換 (將 Access 的 Key 轉成 PG 的 Key)
+    const dataToInsert = rows.map((row) => {
+      let transformed = {};
+      for (const [pgCol, accessCol] of Object.entries(columns)) {
+        transformed[pgCol] = row[accessCol] === "" ? null : row[accessCol];
+      }
+      return transformed;
+    });
 
-    // C. 準備 SQL 語句
-    const pgCols = Object.keys(columns); 
-    const colNames = pgCols.join(", ");
-    const placeholders = pgCols.map((_, i) => `$${i + 1}`).join(", ");
-    const insertSql = `INSERT INTO ${pgTable} (${colNames}) VALUES (${placeholders})`;
+    // E. 使用 pg-promise Helpers 進行批量寫入
+    // ColumnSet 會定義哪些欄位要進入 INSERT 指令
+    const cs = new pgp.helpers.ColumnSet(Object.keys(columns), {
+      table: pgTable,
+    });
 
-    // D. 執行寫入
-    console.log(`   開始寫入資料...`);
-    for (const row of rows) {
-      const values = pgCols.map(col => {
-        const accessKey = columns[col];
-        let val = row[accessKey];
+    // 產生一個超大的 INSERT INTO ... VALUES (...), (...), ...
+    const query = pgp.helpers.insert(dataToInsert, cs);
 
-        // --- 關鍵：處理日期差一天的問題 ---
-        if (dateFields.includes(col) && val) {
-          // 使用 sv-SE 格式 (YYYY-MM-DD) 強制轉為字串，避免 JS 時區偏移
-          return new Date(val).toLocaleDateString('sv-SE');
-        }
-        
-        // 處理 null 或 undefined
-        return val === undefined ? null : val;
-      });
-
-      await pgPool.query(insertSql, values);
-    }
-    console.log(`   ✅ ${pgTable} 遷移完成！`);
-
+    await db.none(query);
+    console.log(`   ✅ 批量寫入完成！`);
   } catch (err) {
-    console.error(`   ❌ ${accessTable} 遷移失敗:`, err.message);
-    throw err; // 丟出錯誤讓主程序知道
+    console.error(`   ❌ 遷移出錯:`, err.message);
   }
 }
 
-// --- 3. 啟動主程序 ---
-async function main() {
-  const startTime = Date.now();
+async function run() {
+  const start = Date.now();
   try {
-    for (const tableConfig of schemaMap) {
-      await migrateTable(tableConfig);
+    for (const config of schemaMap) {
+      await migrateTable(config);
     }
-    
-    const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    console.log(`\n============================================`);
-    console.log(`✨ 全部遷移任務成功！總耗時: ${duration} 秒`);
-    console.log(`============================================`);
-
-  } catch (error) {
-    console.error("\n💥 遷移過程中斷：", error);
+    console.log(`\n✨ 全部完成！總耗時: ${(Date.now() - start) / 1000} 秒`);
   } finally {
-    await pgPool.end();
-    console.log("PG 連線已關閉。");
+    pgp.end(); // 關閉連線池
   }
 }
 
-main();
+run();
