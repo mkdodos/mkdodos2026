@@ -11,6 +11,8 @@ import Funds from "../pages/funds/Index";
 import AutoTable from "../pages/AutoTable/Index";
 import MobileDataList from "../components/MobileDataList";
 
+import TransactionList from "../pages/Finance/TransationList";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "funds",
         element: <Funds />,
+      },
+      {
+        path: "/stocks/history",
+        element: <TransactionList />,
       },
       // {
       //   path: "mobile-list",

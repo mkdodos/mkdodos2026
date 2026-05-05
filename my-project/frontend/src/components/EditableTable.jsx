@@ -199,6 +199,7 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
     ...mergedColumns,
     {
       title: "操作",
+      width: "10%",
       dataIndex: "operation",
       render: (_, record) => {
         const editable = isEditing(record);

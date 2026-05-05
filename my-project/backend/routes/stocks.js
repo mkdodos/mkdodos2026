@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const helper = require("../utils/db-helper");
 
-const TABLE_NAME = "stocks"; // 只要改這裡，就能套用到不同資料表
+const TABLE_NAME = "stock_transactions"; // 只要改這裡，就能套用到不同資料表
 
 // 取得資料
-router.get("/", async (req, res) => {
+// 對應前端 fetch('/api/stocks/transactions') 的 GET 請求
+router.get("/transactions", async (req, res) => {
   try {
     const data = await helper.getAll(TABLE_NAME);
     res.json({ success: true, data });

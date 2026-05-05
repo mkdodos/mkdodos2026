@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import { Form, Input, InputNumber, DatePicker } from "antd";
+import { Form, Input, InputNumber, DatePicker, Select } from "antd";
 
 // 這就是你需要「引入」的組件內容
 export const EditableCell = ({
@@ -19,13 +19,29 @@ export const EditableCell = ({
 
   // 加上 ?. 確保 dataIndex 存在才執行 toLowerCase()
   const isDateField = dataIndex?.toLowerCase()?.includes("date");
-  const isAgeField = dataIndex === "age";
+  // const isAgeField = dataIndex === "age";
+  const isNumberField =
+    inputType === "number" || dataIndex === "quantity" || dataIndex === "price";
+  const isSideField = dataIndex === "side"; // 判斷是否為 side 欄位
 
-  if (isAgeField) {
-    inputNode = <InputNumber />;
+  if (isSideField) {
+    inputNode = (
+      <Select style={{ width: "100%" }}>
+        <Option value="B">買入</Option>
+        <Option value="S">賣出</Option>
+      </Select>
+    );
   } else if (isDateField) {
     inputNode = <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />;
+  } else if (isNumberField) {
+    inputNode = <InputNumber style={{ width: "100%" }} />;
   }
+
+  // if (isAgeField) {
+  //   inputNode = <InputNumber />;
+  // } else if (isDateField) {
+  //   inputNode = <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />;
+  // }
   // const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
   return (
     <td {...restProps}>
