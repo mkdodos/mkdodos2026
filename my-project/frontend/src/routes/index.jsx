@@ -6,6 +6,7 @@ import BasicLayout from "../layouts/BasicLayout";
 import Items from "../pages/Items/Index";
 import Boxes from "../pages/boxes/Index";
 import Cates from "../pages/cates/Index";
+import Funds from "../pages/funds/Index";
 
 import AutoTable from "../pages/AutoTable/Index";
 import MobileDataList from "../components/MobileDataList";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "auto-table",
         element: <AutoTable />,
+      },
+      {
+        path: "funds",
+        element: <Funds />,
       },
       // {
       //   path: "mobile-list",

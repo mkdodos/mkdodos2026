@@ -8,6 +8,7 @@ import {
   Button,
   Space,
 } from "antd";
+import dayjs from "dayjs";
 import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { EditableCell } from "./EditableCell"; // 從你存放的地方引入
@@ -41,12 +42,46 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
       return;
     }
 
+    // const newData = {
+    //   id: "new_temp_id", // 臨時 ID
+    //   name: "", // 根據你的欄位初始化空值
+    //   age: "",
+    //   address: "",
+    // };
+
+    // 取得今天的日期字串 (例如: "2026-05-05")
+    const today = dayjs().format("YYYY-MM-DD");
+
+    // --- 動態初始化邏輯 ---
+    // const initialValues = columnsConfig.reduce((acc, col) => {
+    //   if (col.dataIndex) {
+    //     // 根據需求設定預設值，例如數字給 0 或 null，文字給空字串
+    //     acc[col.dataIndex] = "";
+    //   }
+    //   return acc;
+    // }, {});
+
+    // 動態生成初始值
+    const initialValues = columnsConfig.reduce((acc, col) => {
+      if (col.dataIndex) {
+        // 判斷是否為日期欄位 (根據你的 dataIndex 命名規則)
+        if (col.dataIndex.toLowerCase().includes("date")) {
+          acc[col.dataIndex] = today;
+        } else if (col.dataIndex === "age") {
+          acc[col.dataIndex] = 0;
+        } else {
+          acc[col.dataIndex] = "";
+        }
+      }
+      return acc;
+    }, {});
+
+    // id 要在其它欄位後給值,才不會被覆蓋掉
     const newData = {
+      ...initialValues,
       id: "new_temp_id", // 臨時 ID
-      name: "", // 根據你的欄位初始化空值
-      age: "",
-      address: "",
     };
+    // --------------------
 
     // 將新資料放到陣列最前面
     setData([newData, ...data]);
