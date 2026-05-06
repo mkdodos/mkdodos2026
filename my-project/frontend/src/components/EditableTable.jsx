@@ -32,7 +32,8 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
     }
   };
 
-  // 判斷是否正在編輯
+  // 判斷是否正在編輯(那一列)
+  // 表格有成千上萬列，程式需要知道現在是哪一列處於「編輯狀態」。
   const isEditing = (record) => record.id === editingKey;
 
   const handleAdd = () => {
@@ -180,6 +181,8 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
   };
 
   // 合併自定義欄位與編輯邏輯
+  // onCell 是一個函式，Table 在渲染每一個儲存格（<td>）時都會去執行它。它的目的是讓你能夠 動態地 為特定的儲存格注入屬性（Props）。
+  // onCell 就是一個 橋樑。它負責把這一列的資料（record）和目前的狀態（是否在編輯中），打包後傳遞給負責顯示的元件（EditableCell）。
   const mergedColumns = columnsConfig.map((col) => {
     if (!col.editable) return col;
     return {
@@ -258,6 +261,8 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
       >
         新增一列
       </Button>
+
+      {/* component={false} 這個屬性很重要。因為 HTML 規範中 <table> 標籤內不能直接嵌套 <form> 標籤，設定為 false 可以讓 Form 元件只作為「功能容器」存在，而不會在 DOM 裡面多長出一層 form 節點，避免破壞表格結構。 */}
       <Form form={form} component={false}>
         <Table
           rowKey="id"

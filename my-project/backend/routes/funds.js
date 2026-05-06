@@ -1,8 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const helper = require("../utils/db-helper");
+const db = require("../db"); // 連線模組
 
 const TABLE_NAME = "funds"; // 只要改這裡，就能套用到不同資料表
+
+// 取得加總資料
+// 取得資料
+router.get("/total", async (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+      fund_id, 
+      SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) AS total_qty
+      FROM funds
+      GROUP BY fund_id
+      HAVING SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) > 0
+      ORDER BY fund_id;
+    `;
+    const result = await db.query(sql);
+    res.json({
+      success: true,
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("資料庫連線出錯");
+  }
+});
 
 // 取得資料
 router.get("/", async (req, res) => {

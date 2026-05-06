@@ -1,10 +1,13 @@
 -- 欄位重新命名
--- ALTER TABLE funds 
--- RENAME COLUMN in_date TO trade_date;
+ALTER TABLE funds 
+RENAME COLUMN stock_id TO fund_id;
 
-ALTER TABLE funds  
-ADD COLUMN side CHAR(1) CHECK (side IN ('B', 'S')); -- 強制只能存 B 或 S
+-- ALTER TABLE funds  
+-- 強制只能存 B 或 S
+-- ADD COLUMN side CHAR(1) CHECK (side IN ('B', 'S')); 
 
+-- ALTER TABLE funds  
+-- ADD COLUMN stock_id VARCHAR(10)
 
 -- ALTER TABLE funds 
 -- ALTER COLUMN price TYPE numeric(12, 2);

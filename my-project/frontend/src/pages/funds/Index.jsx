@@ -2,6 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import EditableTable from "../../components/EditableTable";
 import { Tag } from "antd";
+import Portfolio from "./Portfolio";
 
 function Index() {
   const columns = [
@@ -49,6 +50,13 @@ function Index() {
       ),
     },
     {
+      title: "基金編號",
+      dataIndex: "fund_id",
+      width: "10%",
+      editable: true,
+      required: true,
+    },
+    {
       title: "基金名稱",
       dataIndex: "fund_name",
       width: "15%",
@@ -58,7 +66,7 @@ function Index() {
     {
       title: "股數",
       dataIndex: "qty",
-      width: "10%",
+      width: "7%",
       editable: true,
       required: false,
     },
@@ -79,6 +87,7 @@ function Index() {
   return (
     <div style={{ padding: 20 }}>
       <h2>基金管理系統</h2>
+      <Portfolio />
       <EditableTable
         apiEndpoint="http://192.168.0.10:3000/api/funds"
         columnsConfig={columns}

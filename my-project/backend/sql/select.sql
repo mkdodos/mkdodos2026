@@ -1,12 +1,23 @@
-SELECT * FROM funds
+-- SELECT * FROM funds
 
 
 -- SELECT * FROM stock_transactions
 
--- 計算庫存
+-- 計算單一庫存
 -- SELECT SUM(CASE WHEN side = 'B' THEN quantity ELSE -quantity END) as current_holding
 -- FROM stock_transactions
 -- WHERE stock_id = '2330';
+
+-- 計算所有庫存
+
+
+SELECT 
+    fund_id, 
+    SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) AS total_qty
+FROM funds
+GROUP BY fund_id
+HAVING SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) > 0
+ORDER BY fund_id;
 
 
 -- SELECT 
