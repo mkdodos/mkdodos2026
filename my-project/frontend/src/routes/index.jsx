@@ -13,11 +13,17 @@ import MobileDataList from "../components/MobileDataList";
 
 import TransactionList from "../pages/Finance/TransationList";
 
+import StockMaster from "../pages/StockMaster/Index";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <BasicLayout />, // 佈局骨架
     children: [
+      {
+        path: "stock-master",
+        element: <StockMaster />,
+      },
       {
         path: "items",
         element: <Items />,

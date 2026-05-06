@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import EditableTable from "../../components/EditableTable";
+import EditableTable from "./components/EditableTable";
 import { Tag } from "antd";
 import Portfolio from "./Portfolio";
 
@@ -35,6 +35,7 @@ function Index() {
       editable: true,
       width: "15%",
       required: false,
+      // 讓 B S 字串顯示成買入賣出
       render: (side) => (
         <Tag
           color={side === "B" ? "volcano" : "cyan"}
