@@ -9,14 +9,26 @@ const TABLE_NAME = "funds"; // 只要改這裡，就能套用到不同資料表
 // 取得資料
 router.get("/total", async (req, res) => {
   try {
+    // const sql = `
+    //   SELECT
+    //   fund_id,
+    //   SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) AS total_qty
+    //   FROM funds
+    //   GROUP BY fund_id
+    //   HAVING SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) > 0
+    //   ORDER BY fund_id;
+    // `;
     const sql = `
-      SELECT 
-      fund_id, 
-      SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) AS total_qty
-      FROM funds
-      GROUP BY fund_id
-      HAVING SUM(CASE WHEN side = 'B' THEN qty ELSE -qty END) > 0
-      ORDER BY fund_id;
+    SELECT 
+    f.fund_id, 
+    s.stock_no,      -- 從 stocks 表取得代號
+    s.stock_name,    -- 從 stocks 表取得名稱
+    SUM(CASE WHEN f.side = 'B' THEN f.qty ELSE -f.qty END) AS total_qty
+FROM funds f
+INNER JOIN stock_master s ON f.fund_id = s.id  -- 連結條件：基金ID等於股票表的主鍵ID
+GROUP BY f.fund_id, s.stock_no, s.stock_name
+HAVING SUM(CASE WHEN f.side = 'B' THEN f.qty ELSE -f.qty END) > 0
+ORDER BY f.fund_id;
     `;
     const result = await db.query(sql);
     res.json({

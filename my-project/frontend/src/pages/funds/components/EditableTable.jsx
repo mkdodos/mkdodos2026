@@ -13,15 +13,37 @@ import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { EditableCell } from "./EditableCell"; // 從你存放的地方引入
 
-const EditableTable = ({ apiEndpoint, columnsConfig }) => {
+const EditableTable = ({ apiEndpoint, columnsConfig, stocks }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
 
+  console.log(stocks);
+
+  // const [stocks, setStocks] = useState([]); // 存儲資料庫回來的股票清單
+  // const [stockMap, setStockMap] = useState({});
+
   // 1. 初始化讀取資料
   useEffect(() => {
     fetchData();
+    // fetchStocks();
   }, []);
+
+  // const fetchStocks = async () => {
+  //   try {
+
+  //     const res = await axios.get("/api/stock_master");
+  //     const data = res.data.data;
+  //     const map = {};
+  //     data.forEach((s) => {
+  //       map[s.id] = `${s.stock_no} ${s.stock_name}`;
+  //     });
+  //     setStocks(data);
+  //     setStockMap(map);
+  //   } catch (error) {
+  //     console.error("抓取失敗:", error);
+  //   }
+  // };
 
   const fetchData = async () => {
     try {
@@ -183,6 +205,7 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
   // 合併自定義欄位與編輯邏輯
   // onCell 是一個函式，Table 在渲染每一個儲存格（<td>）時都會去執行它。它的目的是讓你能夠動態地為特定的儲存格注入屬性（Props）。
   // onCell 就是一個橋樑。它負責把這一列的資料（record）和目前的狀態（是否在編輯中），打包後傳遞給負責顯示的元件（EditableCell）。
+
   const mergedColumns = columnsConfig.map((col) => {
     if (!col.editable) return col;
     return {
@@ -193,6 +216,8 @@ const EditableTable = ({ apiEndpoint, columnsConfig }) => {
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        stocks,
+        // stocks: [{ stock_no: "123", stock_name: "測試" }],
       }),
     };
   });

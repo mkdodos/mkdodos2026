@@ -27,6 +27,16 @@ function Portfolio() {
       width: "5%",
     },
     {
+      title: "編號",
+      dataIndex: "stock_no",
+      width: "5%",
+    },
+    {
+      title: "編號",
+      dataIndex: "stock_name",
+      width: "5%",
+    },
+    {
       title: "股數",
       dataIndex: "total_qty",
       width: "5%",

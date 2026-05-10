@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useLocation, Link } from "react-router-dom";
 import { Menu, Table, Button, Modal, Form, Input, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
-
+import MobileDemo from "./MobileDemo";
 import { useCates } from "./useCates";
 import {
   DashboardOutlined,
@@ -17,6 +18,9 @@ export default function Index() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
+
+  // 判斷螢幕寬度是否小於 768px
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const columns = [
     { title: "ID", dataIndex: "id", width: 80 },
@@ -87,9 +91,32 @@ export default function Index() {
     if (await deleteItem(id)) setIsModalOpen(false);
   };
 
+  // data={[
+  //   {
+  //     qty: 100,
+  //     price: 300.5,
+  //     stock_no: "2330",
+  //     stock_name: "台積電",
+  //     trade_time: "2026-05-10",
+  //   },
+  //   {
+  //     stock_name: "0050",
+  //     qty: 100,
+  //     price: 30.5,
+  //     stock_no: "2330",
+  //     side: "B",
+  //     trade_time: "2026-05-10",
+  //   },
+  // ]}
+
   return (
     <div>
-      <Table dataSource={data} columns={columns} rowKey="id" />
+      {isMobile ? (
+        <MobileDemo data={data} />
+      ) : (
+        <Table dataSource={data} columns={columns} rowKey="id" />
+      )}
+
       <Modal
         title="編輯表單"
         closable={{ "aria-label": "Custom Close Button" }}

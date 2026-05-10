@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import EditableTable from "./components/EditableTable";
-import { Tag } from "antd";
+import { Tag, Tabs } from "antd";
 import Portfolio from "./Portfolio";
+import axios from "axios";
 
 function Index() {
   const columns = [
@@ -33,7 +34,7 @@ function Index() {
       title: "交易別",
       dataIndex: "side",
       editable: true,
-      width: "15%",
+      width: "10%",
       required: false,
       // 讓 B S 字串顯示成買入賣出
       render: (side) => (
@@ -56,14 +57,19 @@ function Index() {
       width: "10%",
       editable: true,
       required: true,
+      render: (fund_id) => {
+        console.log(typeof fund_id);
+        return stockMap[fund_id] || fund_id;
+      },
+      // render: (fund_id) => (fund_id === "0050" ? "元大" : fund_id),
     },
-    {
-      title: "基金名稱",
-      dataIndex: "fund_name",
-      width: "15%",
-      editable: true,
-      required: true,
-    },
+    // {
+    //   title: "基金名稱",
+    //   dataIndex: "fund_name",
+    //   width: "15%",
+    //   editable: true,
+    //   required: true,
+    // },
     {
       title: "股數",
       dataIndex: "qty",
@@ -85,14 +91,58 @@ function Index() {
       required: false,
     },
   ];
+  // 取得 stocks
+  const [stocks, setStocks] = useState([]); // 存儲資料庫回來的股票清單
+  const [stockMap, setStockMap] = useState({});
+  const tabItems = [
+    {
+      key: "1",
+      label: "統計",
+      children: <Portfolio />,
+    },
+    {
+      key: "2",
+      label: "交易記錄",
+      children: (
+        <EditableTable
+          stocks={stocks}
+          apiEndpoint="http://192.168.0.10:3000/api/funds"
+          columnsConfig={columns}
+        />
+      ),
+    },
+    {
+      key: "3",
+      label: "Tab 3",
+      children: "Content of Tab Pane 3",
+    },
+  ];
+
+  const fetchStocks = async () => {
+    try {
+      const res = await axios.get("/api/stock_master");
+      const data = res.data.data;
+
+      const map = {};
+      data.forEach((s) => {
+        map[s.id] = `${s.stock_no} ${s.stock_name}`;
+      });
+      setStocks(data);
+      setStockMap(map);
+    } catch (error) {
+      console.error("抓取失敗:", error);
+    }
+  };
+
+  // 1. 初始化讀取資料
+  useEffect(() => {
+    fetchStocks();
+  }, []);
+
   return (
     <div style={{ padding: 20 }}>
       <h2>基金管理系統</h2>
-      <Portfolio />
-      <EditableTable
-        apiEndpoint="http://192.168.0.10:3000/api/funds"
-        columnsConfig={columns}
-      />
+      <Tabs defaultActiveKey="1" items={tabItems} />
     </div>
   );
 }

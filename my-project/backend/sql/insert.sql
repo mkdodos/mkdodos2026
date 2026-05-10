@@ -1,11 +1,11 @@
+
 INSERT INTO stock_master (stock_no, stock_name) VALUES 
-('0123', '測試用');
--- INSERT INTO stock_master (stock_no, stock_name) VALUES 
+-- ('0056', '元大高股息');
 -- ('2330', '台積電'),
--- ('0050', '元大台灣50'),
+('0050', '元大台灣50');
 -- ('2317', '鴻海'),
 -- ('2454', '聯發科'),
--- ('0056', '元大高股息');
+
 
 
 -- INSERT INTO stock_transactions (stock_id, side, quantity, price, trade_date)
