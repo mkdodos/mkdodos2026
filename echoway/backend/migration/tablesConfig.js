@@ -1,21 +1,30 @@
 const schemaMap = [
   {
     accessTable: "Stocks",
-    pgTable: "stocks",
+    pgTable: "wp_stock",
     // 格式： { "PG 欄位名": "Access 欄位名" }
     columns: {
-      circle1: "Circle",
-      note_text: "NoteText",
+      od: "Circle",
+      len: "Length",
     },
   },
-  {
-    accessTable: "StockNeed",
-    pgTable: "stock_need",
-    // 格式： { "PG 欄位名": "Access 欄位名" }
-    columns: {
-      emp_id: "empID",
-    },
-  },
+  // {
+  //   accessTable: "Stocks",
+  //   pgTable: "stocks",
+  //   // 格式： { "PG 欄位名": "Access 欄位名" }
+  //   columns: {
+  //     circle1: "Circle",
+  //     note_text: "NoteText",
+  //   },
+  // },
+  // {
+  //   accessTable: "StockNeed",
+  //   pgTable: "stock_need",
+  //   // 格式： { "PG 欄位名": "Access 欄位名" }
+  //   columns: {
+  //     emp_id: "empID",
+  //   },
+  // },
   // {
   //   accessTable: "員工基本資料",
   //   pgTable: "employees",

@@ -12,12 +12,12 @@ import {
 function TopMenu() {
   const navigate = useNavigate();
   // 定義選單項目
-  const menuItems = [  
+  const menuItems = [
+    { key: "/wp-stock", icon: <AppstoreOutlined />, label: "工件庫存" },
     { key: "/fees", icon: <AppstoreOutlined />, label: "費用表" },
     { key: "/customers", icon: <AppstoreOutlined />, label: "客戶管理" },
   ];
   return (
-   
     <Menu
       mode="horizontal"
       onClick={({ key }) => navigate(key)}
@@ -27,7 +27,6 @@ function TopMenu() {
       items={menuItems}
       style={{ flex: 1, minWidth: 0, height: "100%" }}
     />
-   
   );
 }
 
