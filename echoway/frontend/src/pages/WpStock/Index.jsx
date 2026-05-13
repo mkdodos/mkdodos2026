@@ -45,6 +45,10 @@ function Index() {
       title: "len",
       dataIndex: "len",
     },
+    {
+      title: "status",
+      dataIndex: "status",
+    },
   ];
 
   useEffect(() => {

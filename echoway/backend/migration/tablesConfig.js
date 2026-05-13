@@ -1,13 +1,23 @@
 const schemaMap = [
   {
     accessTable: "Stocks",
-    pgTable: "wp_stock",
+    pgTable: "old_stock",
     // 格式： { "PG 欄位名": "Access 欄位名" }
     columns: {
       od: "Circle",
       len: "Length",
+      qty: "Qty",
     },
   },
+  // {
+  //   accessTable: "Stocks",
+  //   pgTable: "wp_stock",
+  //   // 格式： { "PG 欄位名": "Access 欄位名" }
+  //   columns: {
+  //     od: "Circle",
+  //     len: "Length",
+  //   },
+  // },
   // {
   //   accessTable: "Stocks",
   //   pgTable: "stocks",
