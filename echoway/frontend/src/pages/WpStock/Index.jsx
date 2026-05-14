@@ -49,6 +49,10 @@ function Index() {
       title: "status",
       dataIndex: "status",
     },
+    {
+      title: "old_id",
+      dataIndex: "old_id",
+    },
   ];
 
   useEffect(() => {

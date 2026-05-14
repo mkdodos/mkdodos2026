@@ -7,6 +7,7 @@ const schemaMap = [
       od: "Circle",
       len: "Length",
       qty: "Qty",
+      old_id: "ID", // 記錄原ID,做為資料比對用
     },
   },
   // {

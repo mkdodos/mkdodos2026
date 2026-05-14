@@ -5,7 +5,7 @@ const helper = {
   // 取得所有資料
   async getAll(tableName, orderBy = "id DESC") {
     const { rows } = await db.query(
-      `SELECT * FROM ${tableName} ORDER BY ${orderBy} LIMIT 100`,
+      `SELECT * FROM ${tableName} ORDER BY ${orderBy} LIMIT 1000`,
     );
     return rows;
   },

@@ -1,0 +1,1 @@
+ALTER SEQUENCE stock_sn_seq RESTART WITH 1;
