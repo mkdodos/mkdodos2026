@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { message, Table } from "antd";
 import axios from "axios";
 import { useState } from "react";
+import DemandList from "../WpDemand/DemandList";
 
 function Index() {
   // const API_BASE = "http://192.168.0.10:3001/api/wp-stock/family-tree";
@@ -61,6 +62,7 @@ function Index() {
 
   return (
     <div>
+      <DemandList />
       <Table columns={columns} dataSource={data} rowKey="id" />
     </div>
   );

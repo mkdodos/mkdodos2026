@@ -3,6 +3,7 @@ const customerRouter = require("./routes/customers"); // 引入檔案
 const stockRouter = require("./routes/stocks");
 const feeRouter = require("./routes/fees");
 const wpStockRouter = require("./routes/wp_stock");
+const wpDemandRouter = require("./routes/wp_demand");
 
 const db = require("./db"); // 引入剛才寫的連線模組
 const app = express();
@@ -21,6 +22,7 @@ app.use("/api/customers", customerRouter);
 app.use("/api/stocks", stockRouter);
 app.use("/api/fees", feeRouter);
 app.use("/api/wp-stock", wpStockRouter);
+app.use("/api/wp-demand", wpDemandRouter);
 
 app.get("/", (req, res) => {
   res.send("首頁123456");
