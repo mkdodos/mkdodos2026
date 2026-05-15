@@ -26,14 +26,23 @@ const helper = {
   },
 
   // 更新資料
+  // 更新資料
   async update(tableName, id, data) {
     const keys = Object.keys(data);
     const values = Object.values(data);
-    const setQuery = keys.map((key, i) => `${key} = $${i + 1}`).join(", "); // "name=$1, sort=$2"
 
-    const sql = `UPDATE ${tableName} SET ${setQuery} WHERE id = $${keys.length + 1} RETURNING *`;
-    const { rows } = await db.json(sql, [...values, id]);
-    return rows[0];
+    // 1. 動態生成 "name = $1, sort = $2"
+    const setQuery = keys.map((key, i) => `${key} = $${i + 1}`).join(", ");
+
+    // 2. 將 id 追加到參數陣列的最後一個位置，對應 $${keys.length + 1}
+    const queryValues = [...values, id];
+
+    // 3. 組裝 SQL 語句
+    const sql = `UPDATE ${tableName} SET ${setQuery} WHERE id = $${queryValues.length} RETURNING *`;
+
+    // 4. 執行並回傳更新後的資料
+    const { rows } = await db.query(sql, queryValues);
+    return rows[0]; // 回傳更新後的那筆資料物件
   },
 
   // 刪除資料

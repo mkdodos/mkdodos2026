@@ -8,6 +8,7 @@ const EditForm = ({
   setData,
   handleCancel,
   form,
+  handleDelete,
 }) => {
   // 儲存資料 (新增)
 
@@ -80,6 +81,9 @@ const EditForm = ({
           <Form.Item label={null}>
             <Button type="primary" htmlType="submit">
               Submit
+            </Button>
+            <Button type="primary" onClick={handleDelete}>
+              刪除
             </Button>
           </Form.Item>
         </Form>

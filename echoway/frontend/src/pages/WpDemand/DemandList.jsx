@@ -12,19 +12,22 @@ import {
 } from "antd";
 import { PlayCircleOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useData } from "./useData";
 
 import EditForm from "./EditForm";
 const { Title } = Typography;
 
 const DemandList = () => {
   const API_BASE = "/api/wp-demand";
-  // const API_BASE = "http://192.168.0.10:3001/api/wp-demand";
 
   const [form] = Form.useForm();
 
+  const { data, saveData, deleteData } = useData();
+
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -37,30 +40,11 @@ const DemandList = () => {
     setIsModalOpen(true);
   };
 
-  // 1. 取得資料
-  const getItems = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(API_BASE);
-      setData(response.data.data);
-      // console.log(response.data.data);
-    } catch (error) {
-      message.error("無法取得資料");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getItems();
-  }, []);
-
   const handleEdit = (record) => {
     // console.log(record);
     // 1. 打開彈窗
     setIsModalOpen(true);
-    // 動態設定表單值
-    // form.setFieldsValue(record);
+    setEditingId(record.id);
 
     // 2. 設定表單數值 (這會自動對應到 EditForm 裡 Form.Item 的 name)
     // 建議加上 setTimeout 確保 Modal 渲染完成後再填值，避免 initialValues 衝突
@@ -71,18 +55,29 @@ const DemandList = () => {
 
   // values 表單中輸入項的值
   const handleSave = async (values) => {
-    const response = await axios.post(API_BASE, values);
-    const newData = { id: response.data.data.id, ...values };
-    setData((prev) => [newData, ...prev]);
-    message.success("新增成功");
+    await saveData(values, editingId);
+    setIsModalOpen(false);
+    // const response = await axios.post(API_BASE, values);
+    // const newData = { id: response.data.data.id, ...values };
+    // setData((prev) => [newData, ...prev]);
+    // message.success("新增成功");
+    // console.log(values);
+    // setIsModalOpen(false);
+  };
 
-    console.log(values);
-    // handleSave(values);
+  const handleDelete = async () => {
+    console.log(editingId);
+    await deleteData(editingId);
     setIsModalOpen(false);
   };
 
   // 定義表格欄位
   const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
     {
       title: "訂單編號",
       dataIndex: "order_no",
@@ -190,11 +185,13 @@ const DemandList = () => {
       <EditForm
         isModalOpen={isModalOpen}
         handleSave={handleSave}
+        // handleSave={saveData}
         setIsModalOpen={setIsModalOpen}
         // handleOk={handleOk}
         handleCancel={handleCancel}
-        setData={setData}
+        // setData={setData}
         form={form}
+        handleDelete={handleDelete}
       />
       <Table
         columns={columns}

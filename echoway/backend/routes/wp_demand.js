@@ -28,4 +28,28 @@ router.post("/", async (req, res) => {
 
 // 更新與刪除以此類推...
 
+// 更新資料
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newItem = await helper.update(TABLE_NAME, id, req.body);
+    res.status(201).json({ success: true, data: newItem });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "更新失敗" });
+    console.log(err);
+  }
+});
+
+// 刪除資料
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newItem = await helper.delete(TABLE_NAME, id);
+    res.status(201).json({ success: true, data: newItem });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: "更新失敗" });
+    console.log(err);
+  }
+});
+
 module.exports = router;
