@@ -1,15 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Progress, Button, Space, Card, Typography } from "antd";
+import {
+  Table,
+  Tag,
+  Progress,
+  Button,
+  Space,
+  Card,
+  Typography,
+  message,
+  Form,
+} from "antd";
 import { PlayCircleOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
+
+import EditForm from "./EditForm";
 const { Title } = Typography;
 
 const DemandList = () => {
   const API_BASE = "/api/wp-demand";
   // const API_BASE = "http://192.168.0.10:3001/api/wp-demand";
 
+  const [form] = Form.useForm();
+
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   // 1. 取得資料
   const getItems = async () => {
@@ -17,7 +43,7 @@ const DemandList = () => {
     try {
       const response = await axios.get(API_BASE);
       setData(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       message.error("無法取得資料");
     } finally {
@@ -29,6 +55,32 @@ const DemandList = () => {
     getItems();
   }, []);
 
+  const handleEdit = (record) => {
+    // console.log(record);
+    // 1. 打開彈窗
+    setIsModalOpen(true);
+    // 動態設定表單值
+    // form.setFieldsValue(record);
+
+    // 2. 設定表單數值 (這會自動對應到 EditForm 裡 Form.Item 的 name)
+    // 建議加上 setTimeout 確保 Modal 渲染完成後再填值，避免 initialValues 衝突
+    setTimeout(() => {
+      form.setFieldsValue(record);
+    }, 0);
+  };
+
+  // values 表單中輸入項的值
+  const handleSave = async (values) => {
+    const response = await axios.post(API_BASE, values);
+    const newData = { id: response.data.data.id, ...values };
+    setData((prev) => [newData, ...prev]);
+    message.success("新增成功");
+
+    console.log(values);
+    // handleSave(values);
+    setIsModalOpen(false);
+  };
+
   // 定義表格欄位
   const columns = [
     {
@@ -38,7 +90,7 @@ const DemandList = () => {
       render: (text) => <code style={{ fontWeight: "bold" }}>{text}</code>,
     },
     {
-      title: "規格 (外徑 x 長度)",
+      title: "規格",
       key: "spec",
       render: (_, record) => (
         <span>
@@ -105,7 +157,11 @@ const DemandList = () => {
           >
             執行排產
           </Button>
-          <Button icon={<EditOutlined />} type="text" />
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+            type="text"
+          />
         </Space>
       ),
     },
@@ -127,8 +183,19 @@ const DemandList = () => {
         }}
       >
         <Title level={3}>切割需求管理</Title>
-        <Button type="primary">+ 新增需求</Button>
+        <Button type="primary" onClick={showModal}>
+          + 新增需求
+        </Button>
       </div>
+      <EditForm
+        isModalOpen={isModalOpen}
+        handleSave={handleSave}
+        setIsModalOpen={setIsModalOpen}
+        // handleOk={handleOk}
+        handleCancel={handleCancel}
+        setData={setData}
+        form={form}
+      />
       <Table
         columns={columns}
         dataSource={data}

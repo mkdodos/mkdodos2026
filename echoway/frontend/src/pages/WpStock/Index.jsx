@@ -17,7 +17,7 @@ function Index() {
     try {
       const response = await axios.get(API_BASE);
       setData(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       message.error("無法取得資料");
     } finally {

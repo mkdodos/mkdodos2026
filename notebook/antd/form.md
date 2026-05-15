@@ -1,4 +1,37 @@
+
+
+當你將 Button 的 htmlType 設置為 "submit"，並且該按鈕位於 <Form> 標籤內時，點擊按鈕會觸發 Form 的 onFinish 事件，Ant Design 會自動收集所有包裹在 <Form.Item name="xxx"> 中的欄位值，並封裝成一個對象（Object）傳遞給 onFinish。
+
+```javascript
+<Form
+  onFinish={(values) => {
+    // 這裡的 values 就是自動取得的對象
+    // 格式如：{ username: "Gemini", age: 25 }
+    console.log('取得的值：', values);
+  }}
+>
+  <Form.Item label="用戶名" name="username">
+    <Input />
+  </Form.Item>
+
+  <Form.Item label="年齡" name="age">
+    <InputNumber />
+  </Form.Item>
+
+  <Form.Item>
+    <Button type="primary" htmlType="submit">
+      提交
+    </Button>
+  </Form.Item>
+</Form>
+
+```
+
 ## 表單下拉選單 
+
+
+
+
 
 使用 `<Select>` 
 * options : 選單項目(陣列)
