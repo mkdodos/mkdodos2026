@@ -18,8 +18,6 @@ import EditForm from "./EditForm";
 const { Title } = Typography;
 
 const DemandList = () => {
-  const API_BASE = "/api/wp-demand";
-
   const [form] = Form.useForm();
 
   const { data, saveData, deleteData } = useData();
@@ -37,6 +35,8 @@ const DemandList = () => {
   };
 
   const showModal = () => {
+    setEditingId(null);
+    form.resetFields();
     setIsModalOpen(true);
   };
 
@@ -57,16 +57,9 @@ const DemandList = () => {
   const handleSave = async (values) => {
     await saveData(values, editingId);
     setIsModalOpen(false);
-    // const response = await axios.post(API_BASE, values);
-    // const newData = { id: response.data.data.id, ...values };
-    // setData((prev) => [newData, ...prev]);
-    // message.success("新增成功");
-    // console.log(values);
-    // setIsModalOpen(false);
   };
 
   const handleDelete = async () => {
-    console.log(editingId);
     await deleteData(editingId);
     setIsModalOpen(false);
   };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Checkbox, Form, Input, message } from "antd";
+import { Button, Modal, Checkbox, Form, Input, message, Space } from "antd";
 import axios from "axios";
 const EditForm = ({
   isModalOpen,
@@ -32,7 +32,7 @@ const EditForm = ({
   return (
     <>
       <Modal
-        title="Basic Modal"
+        title="需求編輯表單"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
         // onOk={handleOk}
@@ -43,9 +43,10 @@ const EditForm = ({
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+          style={{ maxWidth: "100%", marginTop: "24px" }}
+          // style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={handleSave}
           onFinishFailed={onFinishFailed}
@@ -78,14 +79,14 @@ const EditForm = ({
             <Input />
           </Form.Item>
 
-          <Form.Item label={null}>
+          <Space style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button type="primary" danger onClick={handleDelete}>
+              刪除
+            </Button>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
-            <Button type="primary" onClick={handleDelete}>
-              刪除
-            </Button>
-          </Form.Item>
+          </Space>
         </Form>
       </Modal>
     </>
