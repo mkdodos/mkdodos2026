@@ -14,12 +14,17 @@ import MobileDataList from "../components/MobileDataList";
 import TransactionList from "../pages/Finance/TransationList";
 
 import StockMaster from "../pages/StockMaster/Index";
+import SupaDemo from "../pages/SupaDemo/Index";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <BasicLayout />, // 佈局骨架
     children: [
+      {
+        path: "supa-demo",
+        element: <SupaDemo />,
+      },
       {
         path: "stock-master",
         element: <StockMaster />,
