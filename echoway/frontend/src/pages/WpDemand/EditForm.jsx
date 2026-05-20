@@ -78,6 +78,12 @@ const EditForm = ({
           <Form.Item label="數量" name="qty">
             <Input />
           </Form.Item>
+          <Form.Item label="優先序" name="priority">
+            <Input />
+          </Form.Item>
+          <Form.Item label="狀態" name="status">
+            <Input />
+          </Form.Item>
 
           <Space style={{ display: "flex", justifyContent: "space-between" }}>
             <Button type="primary" danger onClick={handleDelete}>

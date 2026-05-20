@@ -18,6 +18,7 @@ function TopMenu() {
     { key: "/boxes", icon: <AppstoreOutlined />, label: "盒子管理" },
     { key: "/auto-table", icon: <AppstoreOutlined />, label: "可編輯表格" },
     { key: "/funds", icon: <AppstoreOutlined />, label: "Funds" },
+    { key: "/inv-task", icon: <AppstoreOutlined />, label: "存股" },
   ];
   return (
     // <ConfigProvider

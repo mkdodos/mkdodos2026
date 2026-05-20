@@ -22,6 +22,8 @@ module.exports = {
 ```javascript
 // routes/boxes.js
 const db = require("../db"); // 引入連線模組
+const express = require("express");
+const router = express.Router();
 // 取得資料
 router.get("/", async (req, res) => {
   try {

@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { message, Table } from "antd";
+import { message, Table, Button, Tabs } from "antd";
+import { PlayCircleOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useState } from "react";
 import DemandList from "../WpDemand/DemandList";
+import EditForm from "./EditForm";
 
 function Index() {
   // const API_BASE = "http://192.168.0.10:3001/api/wp-stock/family-tree";
@@ -26,6 +28,17 @@ function Index() {
   };
 
   const columns = [
+    {
+      title: "操作",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => handleEdit(record)}
+          type="text"
+        />
+      ),
+    },
     {
       title: "id",
       dataIndex: "id",
@@ -51,8 +64,24 @@ function Index() {
       dataIndex: "status",
     },
     {
+      title: "demand_id",
+      dataIndex: "demand_id",
+    },
+    {
       title: "old_id",
       dataIndex: "old_id",
+    },
+  ];
+  const tabItems = [
+    {
+      key: "1",
+      label: "需求",
+      children: <DemandList />,
+    },
+    {
+      key: "2",
+      label: "庫存",
+      children: <Table columns={columns} dataSource={data} rowKey="id" />,
     },
   ];
 
@@ -62,8 +91,8 @@ function Index() {
 
   return (
     <div>
-      <DemandList />
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Tabs defaultActiveKey="1" items={tabItems} />
+      <EditForm />
     </div>
   );
 }

@@ -1,0 +1,108 @@
+資料用表格顯示
+```javascript
+ const columns = [
+    {
+      title: "操作",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => handleEdit(record)}
+          type="text"
+        />
+      ),
+    },
+    {
+      title: "id",
+      dataIndex: "id",
+    }
+  ];
+<Table columns={columns} dataSource={data} rowKey="id" />
+```
+
+
+在表格中加入編輯鈕
+```javascript
+ const columns = [
+    {
+      title: "操作",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => handleEdit(record)}
+          type="text"
+        />
+      ),
+    },
+ ]  
+```
+按下編輯鈕顯示 Modal 表單
+
+
+
+使用 axios 連到後端做資料處理
+處理完針對資料做更新
+
+引入 useData
+```javascript
+const { data, saveData, deleteData } = useData();
+
+ // values : 表單中輸入項的值
+  const handleSave = async (values) => {
+    await saveData(values, editingId);    
+  };
+
+  const handleDelete = async () => {
+    await deleteData(editingId);   
+  };
+```
+
+將 axios 操作獨立一個檔案 
+```javascript
+// useData.js
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { message } from "antd";
+
+export const useData = () => {
+  const [data, setData] = useState([]);
+  const API_BASE = "/api/wp-demand";
+
+  const getData = async () => {
+    const response = await axios.get(API_BASE);
+    setData(response.data.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const saveData = async (values, editingId) => {
+    if (editingId) {
+      await axios.put(`${API_BASE}/${editingId}`, values);
+      setData((prev) =>
+        prev.map((item) =>
+          item.id === editingId ? { ...item, ...values } : item,
+        ),
+      );
+      message.success("更新成功");
+    } else {
+      const response = await axios.post(API_BASE, values);
+      const newData = { id: response.data.data.id, ...values };
+      setData((prev) => [newData, ...prev]);
+      message.success("新增成功");
+    }
+  };
+
+  const deleteData = async (id) => {
+    await axios.delete(`${API_BASE}/${id}`);
+    setData((prev) => prev.filter((item) => item.id !== id));
+    message.success("刪除成功");
+    return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
+  };
+
+  return { data, saveData, deleteData };
+};
+
+```

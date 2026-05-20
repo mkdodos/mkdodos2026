@@ -1,9 +1,13 @@
 # postgres 資料庫
 # 資料表欄位型別
 
-smallint
-integer
-
+SERIAL PRIMARY KEY
+VARCHAR(10)
+BOOLEAN
+TIMESTAMP
+DECIMAL(15, 2)
+INTEGER
+SMALLINT
 
 輸入下列指令後,會提示輸入密碼,此指令作用為將 dump 出來的 local_backup.sql
 匯入至 supabase

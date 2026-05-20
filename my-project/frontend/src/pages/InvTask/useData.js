@@ -1,22 +1,3 @@
-使用 axios 連到後端做資料處理
-處理完針對資料做更新
-
-引入 useData
-```javascript
-const { data, saveData, deleteData } = useData();
-
- // values : 表單中輸入項的值
-  const handleSave = async (values) => {
-    await saveData(values, editingId);    
-  };
-
-  const handleDelete = async () => {
-    await deleteData(editingId);   
-  };
-```
-
-將 axios 操作獨立一個檔案 
-```javascript
 // useData.js
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -24,7 +5,7 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
-  const API_BASE = "/api/wp-demand";
+  const API_BASE = "/api/inv-task";
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
@@ -61,5 +42,3 @@ export const useData = () => {
 
   return { data, saveData, deleteData };
 };
-
-```

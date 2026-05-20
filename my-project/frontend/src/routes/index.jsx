@@ -16,6 +16,8 @@ import TransactionList from "../pages/Finance/TransationList";
 import StockMaster from "../pages/StockMaster/Index";
 import SupaDemo from "../pages/SupaDemo/Index";
 
+import InvTask from "../pages/InvTask/Index";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/stocks/history",
         element: <TransactionList />,
+      },
+      {
+        path: "/inv-task",
+        element: <InvTask />,
       },
       // {
       //   path: "mobile-list",
