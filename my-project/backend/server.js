@@ -6,7 +6,9 @@ const customerRouter = require("./routes/customers"); // 引入檔案
 const stockRouter = require("./routes/stocks");
 const fundRouter = require("./routes/funds");
 const stockMasterRouter = require("./routes/stock_master");
-const invTaskRouter = require("./routes/inv_task"); // 引入路由檔案
+const invTaskRouter = require("./routes/inv_task");
+const invSchedRouter = require("./routes/inv_sched");
+const invStockRouter = require("./routes/inv_stock");
 
 const db = require("./db"); // 引入剛才寫的連線模組
 const app = express();
@@ -28,12 +30,15 @@ app.use("/api/customers", customerRouter);
 app.use("/api/stocks", stockRouter);
 app.use("/api/funds", fundRouter);
 app.use("/api/stock_master", stockMasterRouter);
+
 app.use("/api/inv-task", invTaskRouter);
+app.use("/api/inv-sched", invSchedRouter);
+app.use("/api/inv-stock", invStockRouter);
 
 app.get("/", (req, res) => {
   res.send("首頁123456");
 });
 
 app.listen(port, host, () => {
-  console.log("server 啟動 123!");
+  console.log(`server 啟動 ${port}!`);
 });

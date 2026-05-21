@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Switch,
-  Button,
-  Space,
-  Divider,
-  Select,
-} from "antd";
+import { Modal, Form, Input, Switch, Button, Space, Divider } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 export default function EditForm({
@@ -17,7 +8,6 @@ export default function EditForm({
   form,
   handleSave,
   handleDelete,
-  stockOptions,
 }) {
   //   const onFinish = (values) => {
   //     console.log("表單資料:", values);
@@ -38,25 +28,8 @@ export default function EditForm({
           form={form}
           initialValues={{ is_enabled: true }} // 在這裡統一設定預設值
         >
-          {/* <Form.Item name="stock_no" label="股票代碼">
-            <Input />
-          </Form.Item> */}
           <Form.Item name="stock_no" label="股票代碼">
-            <Select
-              showSearch // 開啟搜尋功能
-              allowClear // 允許清除選取
-              style={{ width: 300 }}
-              placeholder="請選擇或搜尋股票"
-              optionFilterProp="label" // 搜尋時根據 label 內容篩選
-              // onChange={handleChange}
-              options={stockOptions}
-              // 如果資料量很大，可以加上過濾邏輯
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-            />
+            <Input />
           </Form.Item>
           <Form.Item
             label="啟用狀態"

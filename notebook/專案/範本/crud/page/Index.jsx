@@ -2,26 +2,15 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
-import { Button, Tag, Form, Select } from "antd";
+import { Button, Tag, Form } from "antd";
 import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
-  const { data, saveData, deleteData, stocks } = useData();
+  const { data, saveData, deleteData } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
   const [form] = Form.useForm();
-
-  // console.log(stocks);
-  // const stockData = [
-  //   /* 你的 JSON 資料 */
-  // ];
-
-  const stockOptions = stocks.map((item) => ({
-    label: `${item.stock_no} ${item.stock_name}`, // 顯示 0050 元大台灣50
-    value: item.stock_no, // 選中後的值
-    key: item.id, // React 需要的唯一 key
-  }));
 
   // values : 表單中輸入項的值
   const handleSave = async (values) => {
@@ -92,7 +81,6 @@ function Index() {
         setIsModalOpen={setIsModalOpen}
         handleSave={handleSave}
         handleDelete={handleDelete}
-        stockOptions={stockOptions}
       />
       <TableView handleEdit={handleEdit} data={data} columns={columns} />
     </div>

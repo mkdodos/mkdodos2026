@@ -1,29 +1,26 @@
--- 投資配置表：設定每月固定執行的任務
--- CREATE TABLE investment_tasks (
---     task_id SERIAL PRIMARY KEY,
---     stock_no VARCHAR(10), -- 例如 2330
---     buy_day_of_month INTEGER, -- 1-31    
---     amount DECIMAL(10, 2),
---     is_enabled BOOLEAN DEFAULT TRUE
--- );
+
+CREATE TABLE inv_stocks AS 
+SELECT * FROM stock_master;
+
+
 
 -- 投資主表 (Investment)
-CREATE TABLE inv_tasks (
-    id SERIAL PRIMARY KEY,
-    stock_no VARCHAR(10) NOT NULL,
-    is_enabled BOOLEAN DEFAULT TRUE,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE inv_tasks (
+--     id SERIAL PRIMARY KEY,
+--     stock_no VARCHAR(10) NOT NULL,
+--     is_enabled BOOLEAN DEFAULT TRUE,
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
 
 -- 投資明細(扣款時程 Schedule)
 -- ON DELETE CASCADE 主表刪除時,同時刪除相關記錄
-CREATE TABLE inv_scheds (
-    id SERIAL PRIMARY KEY,
-    task_id INTEGER REFERENCES inv_tasks(id) ON DELETE CASCADE,
-    buy_day INTEGER CHECK (buy_day BETWEEN 1 AND 31),
-    amt DECIMAL(15, 2) NOT NULL -- Amount 簡寫為 amt
-);
+-- CREATE TABLE inv_scheds (
+--     id SERIAL PRIMARY KEY,
+--     task_id INTEGER REFERENCES inv_tasks(id) ON DELETE CASCADE,
+--     buy_day INTEGER CHECK (buy_day BETWEEN 1 AND 31),
+--     amt DECIMAL(15, 2) NOT NULL -- Amount 簡寫為 amt
+-- );
 
 -- updated_at 用途
 -- 找出最近三天內調整過的投資計畫

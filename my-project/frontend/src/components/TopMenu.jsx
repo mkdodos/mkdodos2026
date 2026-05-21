@@ -19,6 +19,8 @@ function TopMenu() {
     { key: "/auto-table", icon: <AppstoreOutlined />, label: "可編輯表格" },
     { key: "/funds", icon: <AppstoreOutlined />, label: "Funds" },
     { key: "/inv-task", icon: <AppstoreOutlined />, label: "存股" },
+    { key: "/inv-sched", icon: <AppstoreOutlined />, label: "存股明細" },
+    { key: "/inv-stock", icon: <AppstoreOutlined />, label: "股票基本資料" },
   ];
   return (
     // <ConfigProvider

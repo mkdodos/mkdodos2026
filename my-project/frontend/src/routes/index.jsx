@@ -17,6 +17,8 @@ import StockMaster from "../pages/StockMaster/Index";
 import SupaDemo from "../pages/SupaDemo/Index";
 
 import InvTask from "../pages/InvTask/Index";
+import InvSched from "../pages/InvSched/Index";
+import InvStock from "../pages/InvStock/Index";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/inv-task",
         element: <InvTask />,
+      },
+      {
+        path: "/inv-sched",
+        element: <InvSched />,
+      },
+      {
+        path: "/inv-stock",
+        element: <InvStock />,
       },
       // {
       //   path: "mobile-list",
