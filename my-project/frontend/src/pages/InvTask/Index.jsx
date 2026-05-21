@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
-import { Button, Tag, Form, Select } from "antd";
-import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
+import { Button, Tag, Form, Select, Space } from "antd";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
   const { data, saveData, deleteData, stocks } = useData();
@@ -57,11 +57,18 @@ function Index() {
       title: "操作",
       key: "action",
       render: (_, record) => (
-        <Button
-          icon={<EditOutlined />}
-          onClick={() => handleEdit(record)}
-          type="text"
-        />
+        <Space>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+            type="text"
+          />
+          <Button
+            icon={<EyeOutlined />}
+            onClick={() => handleEdit(record)}
+            type="text"
+          />
+        </Space>
       ),
     },
     {

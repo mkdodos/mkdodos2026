@@ -58,6 +58,10 @@ function Index() {
       dataIndex: "id",
     },
     {
+      title: "task_id",
+      dataIndex: "task_id",
+    },
+    {
       title: "buy_day",
       dataIndex: "buy_day",
     },

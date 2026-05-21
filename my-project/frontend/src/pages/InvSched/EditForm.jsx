@@ -28,23 +28,16 @@ export default function EditForm({
           form={form}
           initialValues={{ is_enabled: true }} // 在這裡統一設定預設值
         >
+          <Form.Item name="task_id" label="主表id">
+            <Input />
+          </Form.Item>
           <Form.Item name="buy_day" label="購買日">
             <Input />
           </Form.Item>
           <Form.Item name="amt" label="金額">
             <Input />
           </Form.Item>
-          {/* <Form.Item
-            label="啟用狀態"
-            name="is_enabled"
-            valuePropName="checked" // 關鍵：告訴 Form 這裡要對應的是 checked 屬性而非 value
-          >
-            <Switch
-              checkedChildren="啟用"
-              unCheckedChildren="停用"
-              defaultChecked
-            />
-          </Form.Item> */}
+
           {/* 在這裡加入一條線，調整上下 margin 讓它美觀 */}
           <Divider
             style={{

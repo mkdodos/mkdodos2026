@@ -16,6 +16,38 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 取得某 task id 資料
+router.get("/:taskId", async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    // const { rows } = await db.query(
+    //   `SELECT * FROM ${TABLE_NAME} WHERE task_id=${taskId} `,
+    // );
+    //  使用參數化查詢：避免 SQL Injection
+    // 假如傳來
+    // 1; DROP TABLE users
+    // 會刪除 users 資料表
+    // SELECT * FROM tasks WHERE task_id=1; DROP TABLE users;
+    // 1 OR 1=1 會傳回所有資料 where 就沒用
+    // SELECT * FROM tasks WHERE task_id=1 OR 1=1
+    // 當使用參數化查詢時，資料庫會把 1; DROP TABLE users; 視為一個超長、奇怪的字串 ID。它會去尋找 task_id 等於那一串字串的資料，因為找不到，所以什麼都不會發生，你的資料表也就保住了。
+    const { rows } = await db.query(
+      `SELECT * FROM ${TABLE_NAME} WHERE task_id = $1`,
+      [taskId],
+    );
+    // 處理找不到數據的情況
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, msg: "找不到該任務" });
+    }
+
+    // const data = await helper.getAll(TABLE_NAME);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, msg: "讀取失敗" });
+  }
+});
+
 // 新增資料
 router.post("/", async (req, res) => {
   try {

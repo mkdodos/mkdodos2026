@@ -15,6 +15,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 取得某 id 的所有明細資料
+router.get("/:id/scheds", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { rows } = await db.query(
+      `SELECT * FROM inv_scheds WHERE task_id = $1`,
+      [id],
+    );
+    // 處理找不到數據的情況
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, msg: "找不到該任務" });
+    }
+
+    // const data = await helper.getAll(TABLE_NAME);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, msg: "讀取失敗" });
+  }
+});
+
 // 新增資料
 router.post("/", async (req, res) => {
   try {
