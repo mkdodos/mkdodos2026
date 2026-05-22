@@ -5,12 +5,18 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [dataDetail, setDataDetail] = useState([]);
   const [stocks, setStocks] = useState([]);
   const API_BASE = "/api/inv-task";
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
     setData(response.data.data);
+  };
+
+  const getDetail = async (taskId) => {
+    const response = await axios.get(`/api/inv-task/${taskId}/scheds`);
+    setDataDetail(response.data.data);
   };
 
   // 股票
@@ -49,5 +55,5 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData, stocks };
+  return { data, saveData, deleteData, stocks, dataDetail, getDetail };
 };

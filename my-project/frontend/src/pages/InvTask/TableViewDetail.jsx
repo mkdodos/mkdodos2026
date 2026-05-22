@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "antd";
-function TableView({ data, columns, handleEdit }) {
+function TableViewDetail({ data, columns, handleEdit }) {
   return (
     <div>
       <Table
@@ -13,4 +13,4 @@ function TableView({ data, columns, handleEdit }) {
   );
 }
 
-export default TableView;
+export default TableViewDetail;

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
+import TableViewDetail from "./TableViewDetail";
 import EditForm from "./EditForm";
 import { Button, Tag, Form, Select, Space } from "antd";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
-  const { data, saveData, deleteData, stocks } = useData();
+  const { data, saveData, deleteData, stocks, dataDetail, getDetail } =
+    useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -52,6 +54,17 @@ function Index() {
     setEditingId(record.id);
   };
 
+  const handleShowDetail = (record) => {
+    getDetail(record.id);
+    // setIsModalOpen(true);
+    // form.setFieldsValue(record);
+    // setEditingId(record.id);
+  };
+
+  const detailColumns = [
+    { title: "購買日", dataIndex: "buy_day" },
+    { title: "金額", dataIndex: "amt" },
+  ];
   const columns = [
     {
       title: "操作",
@@ -65,7 +78,7 @@ function Index() {
           />
           <Button
             icon={<EyeOutlined />}
-            onClick={() => handleEdit(record)}
+            onClick={() => handleShowDetail(record)}
             type="text"
           />
         </Space>
@@ -78,6 +91,10 @@ function Index() {
     {
       title: "stock_no",
       dataIndex: "stock_no",
+    },
+    {
+      title: "stock_name",
+      dataIndex: "stock_name",
     },
     // React 不會直接渲染 true 或 false 到 DOM 中
     // 需在 render 處理
@@ -102,6 +119,7 @@ function Index() {
         stockOptions={stockOptions}
       />
       <TableView handleEdit={handleEdit} data={data} columns={columns} />
+      <TableViewDetail data={dataDetail} columns={detailColumns} />
     </div>
   );
 }

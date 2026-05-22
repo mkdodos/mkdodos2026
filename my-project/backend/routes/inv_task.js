@@ -6,12 +6,28 @@ const helper = require("../utils/db-helper");
 const TABLE_NAME = "inv_tasks"; // 只要改這裡，就能套用到不同資料表
 
 // 取得資料
+// router.get("/", async (req, res) => {
+//   try {
+//     const data = await helper.getAll(TABLE_NAME);
+//     res.json({ success: true, data });
+//   } catch (err) {
+//     res.status(500).json({ success: false, msg: "讀取失敗" });
+//   }
+// });
+
+// 取得資料
 router.get("/", async (req, res) => {
   try {
-    const data = await helper.getAll(TABLE_NAME);
-    res.json({ success: true, data });
+    const sql = `SELECT t.id,t.is_enabled ,t.stock_no,s.stock_name FROM inv_tasks t
+JOIN inv_stocks s ON t.stock_no = s.stock_no`;
+    const result = await db.query(sql);
+    res.json({
+      success: true,
+      data: result.rows,
+    });
   } catch (err) {
-    res.status(500).json({ success: false, msg: "讀取失敗" });
+    console.error(err);
+    res.status(500).send("資料庫連線出錯");
   }
 });
 
