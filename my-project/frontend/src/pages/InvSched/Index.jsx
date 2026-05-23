@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
-import { Button, Tag, Form } from "antd";
+import { Button, Tag, Form, Calendar, Badge, Space } from "antd";
 import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
@@ -11,6 +11,55 @@ function Index() {
   const [editingId, setEditingId] = useState(null);
 
   const [form] = Form.useForm();
+
+  const cellRender = (current) => {
+    const date = current.date();
+    const rows = data.filter((obj) => obj.buy_day === date);
+
+    return (
+      <Space direction="vertical" size={2} style={{ width: "100%" }}>
+        {rows.map((row, index) => (
+          <Badge status="processing" text={Number(row.amt)} />
+        ))}
+      </Space>
+    );
+  };
+
+  const dateFullCellRender = (current) => {
+    const date = current.date();
+    // const dayTasks = dataMap.get(date) || [];
+
+    const dayTasks = data.filter((obj) => obj.buy_day === date);
+
+    return (
+      <div
+        style={{
+          height: "120px",
+          border: "1px solid #f0f0f0", // 自己畫格線
+          padding: "4px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* 自己畫日期，想放哪就放哪 */}
+        <div style={{ fontWeight: "bold", textAlign: "left" }}>{date}</div>
+
+        {/* 投資項目 */}
+        <div style={{ overflowY: "auto", flex: 1, textAlign: "left" }}>
+          <Space direction="vertical" size={2} style={{ width: "100%" }}>
+            {dayTasks.map((task) => (
+              <Badge
+                key={task.id}
+                status="success"
+                text={task.amt}
+                size="small"
+              />
+            ))}
+          </Space>
+        </div>
+      </div>
+    );
+  };
 
   // values : 表單中輸入項的值
   const handleSave = async (values) => {
@@ -89,6 +138,10 @@ function Index() {
         setIsModalOpen={setIsModalOpen}
         handleSave={handleSave}
         handleDelete={handleDelete}
+      />
+      <Calendar
+        // cellRender={cellRender}
+        dateFullCellRender={dateFullCellRender}
       />
       <TableView handleEdit={handleEdit} data={data} columns={columns} />
     </div>
