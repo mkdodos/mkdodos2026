@@ -31,7 +31,10 @@ export default function EditForm({
           <Form.Item name="stock_no" label="股票代碼">
             <Input />
           </Form.Item>
-          <Form.Item
+          <Form.Item name="stock_name" label="股票名稱">
+            <Input />
+          </Form.Item>
+          {/* <Form.Item
             label="啟用狀態"
             name="is_enabled"
             valuePropName="checked" // 關鍵：告訴 Form 這裡要對應的是 checked 屬性而非 value
@@ -41,7 +44,7 @@ export default function EditForm({
               unCheckedChildren="停用"
               defaultChecked
             />
-          </Form.Item>
+          </Form.Item> */}
           {/* 在這裡加入一條線，調整上下 margin 讓它美觀 */}
           <Divider
             style={{

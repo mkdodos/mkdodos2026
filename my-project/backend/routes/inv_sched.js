@@ -6,31 +6,68 @@ const helper = require("../utils/db-helper");
 const TABLE_NAME = "inv_scheds"; // 只要改這裡，就能套用到不同資料表
 
 // 取得資料
+
 router.get("/", async (req, res) => {
   try {
-    const data = await helper.getAll(TABLE_NAME);
-    res.json({ success: true, data });
+    const sql = `
+      SELECT 
+        s.stock_name,
+        sc.id,
+        sc.task_id,
+        sc.buy_day,
+        sc.amt
+      FROM inv_stocks s
+      INNER JOIN inv_tasks t ON s.stock_no = t.stock_no
+      INNER JOIN inv_scheds sc ON t.id = sc.task_id
+    `;
+
+    const result = await db.query(sql);
+
+    // 注意：這裡假設你用的是 pg 模組，所以用 result.rows
+    res.json({
+      success: true,
+      data: result.rows || result,
+    });
   } catch (err) {
-    console.log(err);
+    console.error("Database Error:", err); // 使用 console.error 較符合慣例
     res.status(500).json({ success: false, msg: "讀取失敗" });
   }
 });
+
+// router.get("/", async (req, res) => {
+//   try {
+//     // const data = await helper.getAll(TABLE_NAME);
+//     const { data } = await db.query(
+//       `SELECT
+//     inv_stocks.stock_name,inv_scheds.buy_day,
+//     inv_scheds.amt
+// FROM inv_stocks
+// INNER JOIN inv_tasks ON inv_stocks.stock_no = inv_tasks.stock_no
+// INNER JOIN inv_scheds ON inv_tasks.id = inv_scheds.task_id;`,
+//     );
+
+//     res.json({ success: true, data: data });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ success: false, msg: "讀取失敗" });
+//   }
+// });
+
+// router.get("/", async (req, res) => {
+//   try {
+//     const data = await helper.getAll(TABLE_NAME);
+//     res.json({ success: true, data });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ success: false, msg: "讀取失敗" });
+//   }
+// });
 
 // 取得某 task id 資料
 router.get("/:taskId", async (req, res) => {
   try {
     const { taskId } = req.params;
-    // const { rows } = await db.query(
-    //   `SELECT * FROM ${TABLE_NAME} WHERE task_id=${taskId} `,
-    // );
-    //  使用參數化查詢：避免 SQL Injection
-    // 假如傳來
-    // 1; DROP TABLE users
-    // 會刪除 users 資料表
-    // SELECT * FROM tasks WHERE task_id=1; DROP TABLE users;
-    // 1 OR 1=1 會傳回所有資料 where 就沒用
-    // SELECT * FROM tasks WHERE task_id=1 OR 1=1
-    // 當使用參數化查詢時，資料庫會把 1; DROP TABLE users; 視為一個超長、奇怪的字串 ID。它會去尋找 task_id 等於那一串字串的資料，因為找不到，所以什麼都不會發生，你的資料表也就保住了。
+
     const { rows } = await db.query(
       `SELECT * FROM ${TABLE_NAME} WHERE task_id = $1`,
       [taskId],

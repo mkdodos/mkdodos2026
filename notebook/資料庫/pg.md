@@ -1,4 +1,22 @@
 # postgres 資料庫
+
+ // const { rows } = await db.query(
+    //   `SELECT * FROM ${TABLE_NAME} WHERE task_id=${taskId} `,
+    // );
+    //  使用參數化查詢：避免 SQL Injection
+    // 假如傳來
+    // 1; DROP TABLE users
+    // 會刪除 users 資料表
+    // SELECT * FROM tasks WHERE task_id=1; DROP TABLE users;
+    // 1 OR 1=1 會傳回所有資料 where 就沒用
+    // SELECT * FROM tasks WHERE task_id=1 OR 1=1
+    // 當使用參數化查詢時，資料庫會把 1; DROP TABLE users; 視為一個超長、奇怪的字串 ID。它會去尋找 task_id 等於那一串字串的資料，因為找不到，所以什麼都不會發生，你的資料表也就保住了。
+    const { rows } = await db.query(
+      `SELECT * FROM ${TABLE_NAME} WHERE task_id = $1`,
+      [taskId],
+    );
+
+
 # 資料表欄位型別
 
 SERIAL PRIMARY KEY

@@ -12,18 +12,18 @@ function Index() {
 
   const [form] = Form.useForm();
 
-  const cellRender = (current) => {
-    const date = current.date();
-    const rows = data.filter((obj) => obj.buy_day === date);
+  // const cellRender = (current) => {
+  //   const date = current.date();
+  //   const rows = data.filter((obj) => obj.buy_day === date);
 
-    return (
-      <Space direction="vertical" size={2} style={{ width: "100%" }}>
-        {rows.map((row, index) => (
-          <Badge status="processing" text={Number(row.amt)} />
-        ))}
-      </Space>
-    );
-  };
+  //   return (
+  //     <Space direction="vertical" size={2} style={{ width: "100%" }}>
+  //       {rows.map((row, index) => (
+  //         <Badge status="processing" text={Number(row.amt)} />
+  //       ))}
+  //     </Space>
+  //   );
+  // };
 
   const dateFullCellRender = (current) => {
     const date = current.date();
@@ -51,7 +51,7 @@ function Index() {
               <Badge
                 key={task.id}
                 status="success"
-                text={task.amt}
+                text={`${task.stock_name}  $${Number(task.amt)}`}
                 size="small"
               />
             ))}
