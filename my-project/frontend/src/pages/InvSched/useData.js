@@ -5,6 +5,7 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [dataTask, setDataTask] = useState([]);
   const API_BASE = "/api/inv-sched";
 
   const getData = async () => {
@@ -12,8 +13,15 @@ export const useData = () => {
     setData(response.data.data);
   };
 
+  // 取得所有任務,顯示在編輯表單中讓使用者選取
+  const getTasks = async () => {
+    const response = await axios.get(`api/inv-task`);
+    setDataTask(response.data.data);
+  };
+
   useEffect(() => {
     getData();
+    getTasks();
   }, []);
 
   const saveData = async (values, editingId) => {
@@ -40,5 +48,5 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData };
+  return { data, saveData, deleteData, dataTask };
 };

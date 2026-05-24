@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
-import { Button, Tag, Form, Calendar, Badge, Space } from "antd";
+import { Button, Tag, Form, Calendar, Badge, Space, Tabs } from "antd";
 import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
+import dayjs from "dayjs";
 
 function Index() {
-  const { data, saveData, deleteData } = useData();
+  const { data, saveData, deleteData, dataTask } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
   const [form] = Form.useForm();
-
+  const [mode, setMode] = useState("month");
   // const cellRender = (current) => {
   //   const date = current.date();
   //   const rows = data.filter((obj) => obj.buy_day === date);
@@ -25,9 +26,20 @@ function Index() {
   //   );
   // };
 
-  const dateFullCellRender = (current) => {
+  const dateFullCellRender = (current, mode) => {
+    // 1. 如果是年模式，顯示月份名稱
+    if (mode === "year") {
+      return (
+        <div style={{ padding: "10px", textAlign: "center" }}>
+          {current.format("MMM")} {/* 顯示 1月, 2月... */}
+        </div>
+      );
+    }
+
     const date = current.date();
     // const dayTasks = dataMap.get(date) || [];
+
+    const isToday = current.isSame(dayjs(), "day"); // 判斷是否為今天
 
     const dayTasks = data.filter((obj) => obj.buy_day === date);
 
@@ -39,10 +51,21 @@ function Index() {
           padding: "4px",
           display: "flex",
           flexDirection: "column",
+          // 如果是今天，給一個淺藍色底色
+          backgroundColor: isToday ? "#e6f7ff" : "transparent",
         }}
       >
         {/* 自己畫日期，想放哪就放哪 */}
-        <div style={{ fontWeight: "bold", textAlign: "left" }}>{date}</div>
+        <div
+          style={{
+            fontWeight: "bold",
+            textAlign: "left",
+            // 如果是今天，將文字變成藍色並加個圓圈或底線
+            color: isToday ? "#1890ff" : "inherit",
+          }}
+        >
+          {date}
+        </div>
 
         {/* 投資項目 */}
         <div style={{ overflowY: "auto", flex: 1, textAlign: "left" }}>
@@ -111,6 +134,10 @@ function Index() {
       dataIndex: "task_id",
     },
     {
+      title: "名稱",
+      dataIndex: "stock_name",
+    },
+    {
       title: "buy_day",
       dataIndex: "buy_day",
     },
@@ -118,32 +145,43 @@ function Index() {
       title: "amt",
       dataIndex: "amt",
     },
-    // React 不會直接渲染 true 或 false 到 DOM 中
-    // 需在 render 處理
-    // {
-    //   title: "is_enabled",
-    //   dataIndex: "is_enabled",
-    //   render: (enabled) => (
-    //     <Tag color={enabled ? "green" : "red"}>{enabled ? "啟用" : "停用"}</Tag>
-    //   ),
-    // },
+  ];
+
+  const tabItems = [
+    {
+      key: "1",
+      label: "Tab 1",
+      children: (
+        <TableView handleEdit={handleEdit} data={data} columns={columns} />
+      ),
+    },
+    {
+      key: "2",
+      label: "Tab 2",
+      children: (
+        <Calendar
+          mode={mode}
+          onPanelChange={(date, newMode) => setMode(newMode)}
+          // fullCellRender={dateFullCellRender}
+          fullCellRender={(current) => dateFullCellRender(current, mode)}
+        />
+      ),
+    },
   ];
 
   return (
     <div>
       <Button onClick={handleAdd}>新增</Button>
+      <Tabs defaultActiveKey="1" items={tabItems} />
+
       <EditForm
         form={form}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         handleSave={handleSave}
         handleDelete={handleDelete}
+        dataTask={dataTask}
       />
-      <Calendar
-        // cellRender={cellRender}
-        dateFullCellRender={dateFullCellRender}
-      />
-      <TableView handleEdit={handleEdit} data={data} columns={columns} />
     </div>
   );
 }

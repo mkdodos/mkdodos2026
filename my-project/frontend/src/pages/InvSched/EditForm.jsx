@@ -1,5 +1,14 @@
 import React from "react";
-import { Modal, Form, Input, Switch, Button, Space, Divider } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Switch,
+  Button,
+  Space,
+  Divider,
+  Select,
+} from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 export default function EditForm({
@@ -8,11 +17,14 @@ export default function EditForm({
   form,
   handleSave,
   handleDelete,
+  dataTask,
 }) {
-  //   const onFinish = (values) => {
-  //     console.log("表單資料:", values);
-  //     // values.is_enabled 會是 true 或 false
-  //   };
+  const options = dataTask.map((item) => ({
+    label: `${item.stock_no} ${item.stock_name}`, // 顯示 0050 元大台灣50
+    value: item.id, // 選中後的值
+    key: item.id, // React 需要的唯一 key
+  }));
+
   return (
     <div>
       <Modal
@@ -29,7 +41,22 @@ export default function EditForm({
           initialValues={{ is_enabled: true }} // 在這裡統一設定預設值
         >
           <Form.Item name="task_id" label="主表id">
-            <Input />
+            <Select
+              showSearch // 開啟搜尋功能
+              allowClear // 允許清除選取
+              style={{ width: 300 }}
+              placeholder="請選擇或搜尋股票"
+              optionFilterProp="label" // 搜尋時根據 label 內容篩選
+              // onChange={handleChange}
+              options={options}
+              // 如果資料量很大，可以加上過濾邏輯
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            />
+            {/* <Input /> */}
           </Form.Item>
           <Form.Item name="buy_day" label="購買日">
             <Input />
