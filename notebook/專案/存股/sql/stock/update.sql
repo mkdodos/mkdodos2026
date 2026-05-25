@@ -1,0 +1,1 @@
+UPDATE inv_stocks SET id = (SELECT COALESCE(MAX(id), 0) + 1 FROM inv_stocks) WHERE id IS NULL;

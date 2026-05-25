@@ -28,7 +28,7 @@ function TableViewDetail({ data, columns, handleEdit }) {
   console.log(data);
   return (
     <div>
-      <Calendar cellRender={cellRender} />
+      {/* <Calendar cellRender={cellRender} /> */}
       <Table
         handleEdit={handleEdit}
         dataSource={data}

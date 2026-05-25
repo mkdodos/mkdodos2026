@@ -21,6 +21,7 @@ const helper = {
       VALUES (${placeholders}) 
       RETURNING *`;
 
+    console.log(sql);
     const { rows } = await db.query(sql, values);
     return rows[0];
   },

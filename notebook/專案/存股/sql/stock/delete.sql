@@ -1,0 +1,1 @@
+DELETE from inv_stocks where stock_no = '1'

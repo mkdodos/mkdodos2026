@@ -1,5 +1,13 @@
 # postgres 資料庫
 
+
+使用 psql
+./psql -h localhost -p 5432 -U postgres -d mkdodos
+
+查看資料表結構
+\d your_table_name
+
+
  // const { rows } = await db.query(
     //   `SELECT * FROM ${TABLE_NAME} WHERE task_id=${taskId} `,
     // );

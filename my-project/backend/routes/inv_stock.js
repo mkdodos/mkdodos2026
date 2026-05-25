@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
     // 直接把 req.body 丟進去，它會自動抓欄位名稱
     const newItem = await helper.create(TABLE_NAME, req.body);
     res.status(201).json({ success: true, data: newItem, id: newItem.id });
+    console.log(newItem);
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, msg: "新增失敗" });
