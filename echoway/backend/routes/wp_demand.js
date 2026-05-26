@@ -24,12 +24,12 @@ router.get("/stock-fit", async (req, res) => {
           id, 
           od, 
           len, 
-          (len - $1) AS waste
+          (len - $1) AS remain_len
       FROM wp_stock 
       WHERE od = $2 
         AND len >= $1
       ORDER BY len ASC
-      LIMIT 10;
+      LIMIT 1;
           `;
     // 2. 將取出的變數放入 values 陣列，順序必須與 SQL 中的 $1, $2 對應
     const values = [reqLen, reqOd];

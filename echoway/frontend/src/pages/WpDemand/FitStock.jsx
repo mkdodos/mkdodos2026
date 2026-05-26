@@ -1,7 +1,8 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Modal } from "antd";
 
-function FitStock({ data }) {
+function FitStock({ data, open, setOpen, demand }) {
+  console.log(demand);
   const columns = [
     {
       title: "od",
@@ -10,16 +11,22 @@ function FitStock({ data }) {
     {
       title: "len",
       dataIndex: "len",
+      render: (text) => Number(text),
     },
     {
-      title: "waste",
-      dataIndex: "waste",
+      title: "remain_len",
+      dataIndex: "remain_len",
+      render: (text) => Number(text),
     },
   ];
   return (
-    <div>
-      <Table dataSource={data} columns={columns} />
-    </div>
+    <Modal
+      title={`id${demand.id} 外徑${demand.od} 長度${Number(demand.len)}`}
+      open={open}
+      onCancel={() => setOpen(false)}
+    >
+      <Table rowKey="id" dataSource={data} columns={columns} />
+    </Modal>
   );
 }
 

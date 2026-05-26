@@ -25,7 +25,9 @@ const DemandList = () => {
   const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalFitOpen, setIsModalFitOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [demand, setDemand] = useState({ id: "", od: "", len: "" });
 
   // const [editingId, setEditingId] = useState(null);
 
@@ -160,6 +162,8 @@ const DemandList = () => {
 
   const handleRunBFD = (record) => {
     runBFD(record);
+    setIsModalFitOpen(true);
+    setDemand(record);
     // console.log(id);
     // console.log("對需求 ID 執行 BFD 演算法:", id);
     // 這裡串接後端 API
@@ -175,7 +179,12 @@ const DemandList = () => {
           alignItems: "center",
         }}
       >
-        <FitStock data={dataFit} />
+        <FitStock
+          data={dataFit}
+          open={isModalFitOpen}
+          setOpen={setIsModalFitOpen}
+          demand={demand}
+        />
         <Title level={3}>切割需求管理</Title>
         <Button type="primary" onClick={showModal}>
           + 新增需求
