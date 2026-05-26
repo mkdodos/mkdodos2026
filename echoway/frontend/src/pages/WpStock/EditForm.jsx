@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Space, Button } from "antd";
 
 function EditForm({ handleSave, handleDelete }) {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
   return (

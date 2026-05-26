@@ -4,6 +4,7 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [dataFit, setDataFit] = useState([]);
   const API_BASE = "/api/wp-demand";
 
   const getData = async () => {
@@ -14,6 +15,17 @@ export const useData = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const runBFD = async (record) => {
+    // console.log(record);
+    // const url = `${API_BASE}/stock-fit?len=680&od=60.7`;
+    const url = `${API_BASE}/stock-fit`;
+    const { od, len } = record;
+    const response = await axios.get(url, { params: { od, len } });
+    // console.log(url);
+    console.log(response.data.data);
+    setDataFit(response.data.data);
+  };
 
   const saveData = async (values, editingId) => {
     if (editingId) {
@@ -39,5 +51,5 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData };
+  return { data, saveData, deleteData, runBFD, dataFit };
 };

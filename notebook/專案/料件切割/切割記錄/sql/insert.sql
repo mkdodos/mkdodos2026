@@ -1,0 +1,1 @@
+INSERT INTO wp_cut_logs (stock_id,demand_id,cut_len,remain_len) VALUES (1,2,200,500)

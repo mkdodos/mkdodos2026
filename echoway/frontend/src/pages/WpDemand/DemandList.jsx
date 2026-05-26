@@ -13,19 +13,21 @@ import {
 import { PlayCircleOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useData } from "./useData";
-
 import EditForm from "./EditForm";
-const { Title } = Typography;
+import FitStock from "./FitStock";
 
 const DemandList = () => {
+  const { Title } = Typography;
   const [form] = Form.useForm();
 
-  const { data, saveData, deleteData } = useData();
+  const { data, saveData, deleteData, runBFD, dataFit } = useData();
 
   const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
+  // const [editingId, setEditingId] = useState(null);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -141,7 +143,8 @@ const DemandList = () => {
             ghost
             icon={<PlayCircleOutlined />}
             disabled={record.status === "completed"}
-            onClick={() => handleRunBFD(record.id)}
+            // onClick={() => handleRunBFD(record.id)}
+            onClick={() => handleRunBFD(record)}
           >
             執行排產
           </Button>
@@ -155,8 +158,10 @@ const DemandList = () => {
     },
   ];
 
-  const handleRunBFD = (id) => {
-    console.log("對需求 ID 執行 BFD 演算法:", id);
+  const handleRunBFD = (record) => {
+    runBFD(record);
+    // console.log(id);
+    // console.log("對需求 ID 執行 BFD 演算法:", id);
     // 這裡串接後端 API
   };
 
@@ -170,6 +175,7 @@ const DemandList = () => {
           alignItems: "center",
         }}
       >
+        <FitStock data={dataFit} />
         <Title level={3}>切割需求管理</Title>
         <Button type="primary" onClick={showModal}>
           + 新增需求
