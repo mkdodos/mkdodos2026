@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Modal } from "antd";
 
 function FitStock({ data, open, setOpen, demand }) {
-  console.log(demand);
+  // console.log(demand);
   const columns = [
     {
       title: "od",

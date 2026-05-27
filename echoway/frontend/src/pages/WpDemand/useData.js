@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { message } from "antd";
+const API_BASE = "/api/wp-demand";
+
+// const API_BASE = "http://192.168.0.10:3001/api/wp-demand";
 
 export const useData = () => {
   const [data, setData] = useState([]);
   const [dataFit, setDataFit] = useState([]);
-  const API_BASE = "/api/wp-demand";
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
     setData(response.data.data);
+    console.log(API_BASE);
+    // console.log(response.data);
   };
 
   useEffect(() => {
