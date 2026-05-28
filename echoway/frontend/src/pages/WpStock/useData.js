@@ -1,35 +1,23 @@
-import React from "react";
-import { useState, useEffect } from "react";
+// useData.js
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { message } from "antd";
 
-// const API_BASE = "/api/wp-stock/family-tree";
-const API_BASE = "/api/wp-stock/";
-
 export const useData = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  // 修改路徑
+  const API_BASE = "/api/wp-stock";
 
-  //  取得資料
   const getData = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(API_BASE);
-      setData(response.data.data);
-      //   setData(["d"]);
-      console.log(response.data);
-    } catch (error) {
-      message.error("無法取得資料");
-    } finally {
-      setLoading(false);
-    }
+    const response = await axios.get(API_BASE);
+    setData(response.data.data);
   };
 
-  // 3. 儲存資料 (新增或編輯)
-  // 利用 confirmLoading 讓 Modal 的確定按鈕進入轉圈狀態
-  const saveItem = async (values, editingId) => {
-    // console.log(values);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const saveData = async (values, editingId) => {
     if (editingId) {
       await axios.put(`${API_BASE}/${editingId}`, values);
       setData((prev) =>
@@ -40,36 +28,18 @@ export const useData = () => {
       message.success("更新成功");
     } else {
       const response = await axios.post(API_BASE, values);
-      const newData = { id: response.data.id, ...values };
+      const newData = { id: response.data.data.id, ...values };
       setData((prev) => [newData, ...prev]);
       message.success("新增成功");
     }
-
-    return true;
   };
 
-  // 2. 刪除資料
-  const deleteItem = async (id) => {
-    try {
-      await axios.delete(`${API_BASE}/${id}`);
-      setData((prev) => prev.filter((item) => item.id !== id));
-      message.success("刪除成功");
-      return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
-    } catch (error) {
-      message.error("刪除失敗");
-      return false;
-    }
+  const deleteData = async (id) => {
+    await axios.delete(`${API_BASE}/${id}`);
+    setData((prev) => prev.filter((item) => item.id !== id));
+    message.success("刪除成功");
+    return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  useEffect(() => {
-    getData();
-    // console.log("ddd");
-  }, []);
-
-  return {
-    data,
-    saveItem,
-    deleteItem,
-    // getData,
-  };
+  return { data, saveData, deleteData };
 };

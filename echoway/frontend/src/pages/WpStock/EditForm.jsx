@@ -1,50 +1,71 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Space, Button } from "antd";
+import React from "react";
+import { Modal, Form, Input, Switch, Button, Space, Divider } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
-function EditForm({ handleSave, handleDelete }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form] = Form.useForm();
-
+export default function EditForm({
+  isModalOpen,
+  setIsModalOpen,
+  form,
+  handleSave,
+  handleDelete,
+}) {
+  //   const onFinish = (values) => {
+  //     console.log("表單資料:", values);
+  //     // values.is_enabled 會是 true 或 false
+  //   };
   return (
     <div>
       <Modal
-        title="需求編輯表單"
-        closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        // 不顯示ok cancel 鈕
+        title="編輯表單"
         footer={null}
+        onCancel={() => setIsModalOpen(false)}
+        // 增加 body 頂部的間距，標題與表單就不會貼在一起
+        styles={{ body: { paddingTop: "24px" } }}
       >
         <Form
-          form={form}
-          name="basic"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 20 }}
-          style={{ maxWidth: "100%", marginTop: "24px" }}
-          initialValues={{ remember: true }}
           onFinish={handleSave}
-          autoComplete="off"
+          form={form}
+          initialValues={{ is_enabled: true }} // 在這裡統一設定預設值
         >
-          <Form.Item
-            label="訂單編號"
-            name="order_no"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
+          <Form.Item name="sn" label="sn">
+            <Input />
+          </Form.Item>
+          <Form.Item name="od" label="od">
+            <Input />
+          </Form.Item>
+          <Form.Item name="len" label="len">
             <Input />
           </Form.Item>
 
-          <Space style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button type="primary" danger onClick={handleDelete}>
-              刪除
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Space>
+          {/* 在這裡加入一條線，調整上下 margin 讓它美觀 */}
+          <Divider
+            style={{
+              margin: "24px 0",
+              borderColor: "#7cb305",
+              // 改為自定義顏色 (例如綠色)
+              // 增加粗細 (預設是 1px)
+              borderWidth: "2px",
+            }}
+          />
+          <Form.Item style={{ marginBottom: 0 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Button danger icon={<DeleteOutlined />} onClick={handleDelete}>
+                刪除
+              </Button>
+              <Button type="primary" htmlType="submit">
+                儲存
+              </Button>
+            </div>
+          </Form.Item>
         </Form>
       </Modal>
     </div>
   );
 }
-
-export default EditForm;
