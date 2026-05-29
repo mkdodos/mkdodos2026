@@ -16,7 +16,7 @@ import { useData } from "./useData";
 import EditForm from "./EditForm";
 import FitStock from "./FitStock";
 
-const DemandList = () => {
+const Index = () => {
   const { Title } = Typography;
   const [form] = Form.useForm();
 
@@ -212,4 +212,4 @@ const DemandList = () => {
   );
 };
 
-export default DemandList;
+export default Index;

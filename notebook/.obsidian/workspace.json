@@ -13,35 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notebook.md",
-                "mode": "source",
-                "source": true
-              },
-              "icon": "lucide-file",
-              "title": "notebook"
-            },
-            "group": "cdb3a8117ce3b7a8"
-          }
-        ]
-      },
-      {
-        "id": "0cde4d22c761d419",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "7988d6d52f952a20",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "notebook.md",
+                "file": "前端/antd/menu.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "notebook"
-            },
-            "group": "cdb3a8117ce3b7a8"
+              "title": "menu"
+            }
           }
         ]
       }
@@ -205,9 +183,20 @@
       "bases:建立新的 base": false
     }
   },
-  "active": "7988d6d52f952a20",
+  "active": "3e5cbf5a66ead101",
   "lastOpenFiles": [
-    "問題記錄.md",
-    "notebook.md"
+    "日記/2026-05-29.md",
+    "前端/antd/menu.md",
+    "前端/antd/modal.md",
+    "前端/antd/form.md",
+    "前端/antd/行內編輯.md",
+    "前端/axios.md",
+    "前端/crud.md",
+    "前端/package.json.md",
+    "notebook.md",
+    "前端/vite.md",
+    "日記",
+    "Daily",
+    "問題記錄.md"
   ]
 }

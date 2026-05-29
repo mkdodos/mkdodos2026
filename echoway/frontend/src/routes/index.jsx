@@ -5,6 +5,7 @@ import BasicLayout from "../layouts/BasicLayout";
 
 import Customers from "../pages/customers/Index";
 import WpStock from "../pages/WpStock/Index";
+import WpDemand from "../pages/WpDemand/Index";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "wp-stock",
         element: <WpStock />,
+      },
+      {
+        path: "wp-demand",
+        element: <WpDemand />,
       },
     ],
   },
