@@ -5,7 +5,7 @@ web server
 在 vite 專案中, npm run build 會產出 dist 資料夾
 在 nginx.conf 設定 root 連結到此資料夾
 listen : 埠號
-```
+```json
  server {
         listen       8081;
         server_name  localhost;
@@ -17,8 +17,8 @@ listen : 埠號
     }
 ```
 
-在瀏覽器就可查看
-http://localhost:8081
+在瀏覽器就可查看 `http://localhost:8081`
+
 
 ---
 

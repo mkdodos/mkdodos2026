@@ -1,8 +1,5 @@
-
-
-
-// 呼叫 form.resetFields() 後，所有的欄位會回到 initialValues 設定的狀態
-    form.resetFields();
+ `form.resetFields()`
+ >呼叫 form.resetFields() 後，所有的欄位會回到 initialValues 設定的狀態
 
 ```javascript
 <Form 
@@ -18,7 +15,7 @@
 </Form>
 ```
 
-當你將 Button 的 htmlType 設置為 "submit"，並且該按鈕位於 <Form> 標籤內時，點擊按鈕會觸發 Form 的 onFinish 事件，Ant Design 會自動收集所有包裹在 <Form.Item name="xxx"> 中的欄位值，並封裝成一個對象（Object）傳遞給 onFinish。
+當 Button 的 htmlType 設置為 "submit"，並且該按鈕位於 `<Form>` 標籤內時，點擊按鈕會觸發Form 的 onFinish 事件，Ant Design 會自動收集所有包裹在 `<Form.Item name="xxx">` 中的欄位值，並封裝成一個對象（Object）傳遞給 onFinish。
 
 ```javascript
 <Form
@@ -55,7 +52,7 @@
 * options : 選單項目(陣列)
 * lable : 選單文字
 * value : 選單值
-```
+```javascript
 <Select
     options={[
         {
