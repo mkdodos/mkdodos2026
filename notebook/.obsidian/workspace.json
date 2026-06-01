@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "後端/Nginx.md",
+                "file": "前端/查詢.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Nginx"
+              "title": "查詢"
             }
           }
         ]
@@ -185,8 +185,9 @@
   },
   "active": "3e5cbf5a66ead101",
   "lastOpenFiles": [
-    "日記/2026-06-01.md",
     "後端/Nginx.md",
+    "前端/查詢.md",
+    "日記/2026-06-01.md",
     "後端/PM2.md",
     "後端/Express.md",
     "問題記錄.md",

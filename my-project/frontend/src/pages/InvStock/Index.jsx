@@ -6,9 +6,11 @@ import { Button, Tag, Form } from "antd";
 import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
-  const { data, saveData, deleteData } = useData();
+  const { data, originalData, saveData, deleteData } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
+  const [query, setQuery] = useState("");
 
   const [form] = Form.useForm();
 
@@ -41,6 +43,10 @@ function Index() {
     setEditingId(record.id);
   };
 
+  const handleQuery = (query) => {
+    console.log(query);
+  };
+
   const columns = [
     {
       title: "操作",
@@ -69,6 +75,8 @@ function Index() {
 
   return (
     <div>
+      <input onChange={(e) => setQuery(e.target.value)} />
+      <button onClick={() => handleQuery(query)}>查詢</button>
       <Button onClick={handleAdd}>新增</Button>
       <EditForm
         form={form}

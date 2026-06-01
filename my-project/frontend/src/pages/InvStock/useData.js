@@ -5,12 +5,14 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   // 修改路徑
   const API_BASE = "/api/inv-stock";
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
     setData(response.data.data);
+    setOriginalData(response.data.data);
   };
 
   useEffect(() => {

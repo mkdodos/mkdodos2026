@@ -5,12 +5,14 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   // 修改路徑
   const API_BASE = "/api/wp-stock";
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
     setData(response.data.data);
+    setOriginalData(response.data.data);
   };
 
   useEffect(() => {
@@ -41,5 +43,5 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData };
+  return { data, saveData, deleteData, originalData, setData };
 };
