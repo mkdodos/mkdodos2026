@@ -1,3 +1,44 @@
+
+## 使用 WinSW 開機時啟動 Nginx
+1. 下載  [WinSW-x64.exe](https://github.com/winsw/winsw/releases)
+將這個 `.exe` 檔案複製到 **Nginx 安裝根目錄**
+將它重新命名為 **`nginx-service.exe`**
+2. 建立設定檔
+在同一個 Nginx 目錄下，建立一個全新的純文字檔案，命名為 **`nginx-service.xml`**（注意：檔名必須跟上面的 exe 一模一樣），並貼上以下內容： 
+```xml
+<service>
+  <id>nginx</id>
+  <name>Nginx Service</name>
+  <description>High Performance HTTP Server</description>
+  <executable>%BASE%\nginx.exe</executable>
+  <logpath>%BASE%\logs</logpath>
+  <logmode>roll</logmode>
+  <startargument>-p</startargument>
+  <startargument>%BASE%</startargument>
+  <stopprocessarguments>-p</stopprocessarguments>
+  <stopprocessarguments>%BASE%</stopprocessarguments>
+  <stopprocessarguments>-s</stopprocessarguments>
+  <stopprocessarguments>stop</stopprocessarguments>
+</service>
+```
+
+>**`%BASE%` 代表「目前這個 `.xml` 設定檔與 `.exe` 執行檔所在的絕對路徑」**。
+
+ `nginx-service.exe` 和 `nginx-service.xml` 都在同一目錄
+因此，當系統啟動這個服務時，WinSW 會自動把 `%BASE%` 翻譯成該資料夾的絕對路徑：
+- 如果你的 Nginx 在 `C:\nginx`，那 `%BASE%` 就等於 `C:\nginx`。    - 
+如此就能讀取到 nginx.exe
+
+
+3. 註冊為 Windows 服務
+以**系統管理員身分**開啟 CMD 或 PowerShell。    
+使用 `cd` 指令切換到你的 Nginx 目錄（例如：`cd C:\nginx`）。
+    
+4. 執行以下指令將 Nginx 註冊進系統服務：
+`nginx-service.exe install`
+  啟動 Nginx 服務
+`nginx-service.exe start`
+    
 # 功用
 web server
 用來託管 build 出來的 dist

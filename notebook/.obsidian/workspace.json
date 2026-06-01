@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "問題記錄.md",
-                "mode": "preview",
+                "file": "後端/Nginx.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "問題記錄"
+              "title": "Nginx"
             }
           }
         ]
@@ -185,11 +185,14 @@
   },
   "active": "3e5cbf5a66ead101",
   "lastOpenFiles": [
+    "日記/2026-06-01.md",
+    "後端/Nginx.md",
+    "後端/PM2.md",
+    "後端/Express.md",
+    "問題記錄.md",
     "notebook.md",
     "資料庫/pg.md",
     "桌遊/天文鐘.md",
-    "後端/Nginx.md",
-    "後端/Express.md",
     "前端/Vite.md",
     "前端/package.json.md",
     "前端/VS Code.md",
@@ -205,7 +208,6 @@
     "日記/2026-05-29.md",
     "前端/Crud.md",
     "日記",
-    "Daily",
-    "問題記錄.md"
+    "Daily"
   ]
 }
