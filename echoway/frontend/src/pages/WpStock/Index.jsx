@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
-import { Button, Tag, Form } from "antd";
-import { EditOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
+import { Button, Tag, Form, Input, Space } from "antd";
+import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
   const { data, saveData, deleteData, setData, originalData } = useData();
@@ -69,6 +69,9 @@ function Index() {
     {
       title: "od",
       dataIndex: "od",
+      render: (value) => Number(value),
+      // render: (value) => (value != null ? parseFloat(value) : ""),
+      // render: (value) => (value != null ? Number(value) : ""),
     },
     {
       title: "len",
@@ -88,23 +91,55 @@ function Index() {
     },
   ];
 
-  const handleQuery = (query) => {
-    console.log(query);
-    console.log(originalData);
-    if (!query) {
-      setData(originalData);
-    } else {
-      const filtered = originalData.filter((item) => item.od === query);
-      console.log(filtered);
-      setData(filtered);
-    }
+  const [params, setParams] = useState(null);
+
+  const handleSearch = () => {
+    console.log(params);
+    const filtered = originalData.filter((item) => {
+      const matchOd = params.od === "" || Number(item.od) === Number(params.od);
+      const matchSn = params.sn === "" || item.sn.includes(params.sn.trim());
+      return matchOd && matchSn;
+    });
+    setData(filtered);
   };
 
   return (
     <div>
-      <input onChange={(e) => setQuery(e.target.value)} />
-      <button onClick={() => handleQuery(query)}>查詢</button>
-      <Button onClick={handleAdd}>新增</Button>
+      <Space>
+        {/* <Input onChange={(e) => setQuery(e.target.value)} /> */}
+        <Input
+          placeholder="od"
+          onChange={(e) => {
+            setParams({ ...params, od: e.target.value });
+          }}
+        />
+
+        <Input
+          placeholder="sn"
+          onChange={(e) => setParams({ ...params, sn: e.target.value })}
+        />
+
+        <Button
+          icon={<SearchOutlined />}
+          type="primary"
+          onClick={() => handleSearch()}
+        >
+          查詢
+        </Button>
+        <Button
+          icon={<PlusOutlined />}
+          type="primary"
+          // style={{
+          //   backgroundColor: "#52c41a",
+          //   color: "#fff",
+          //   borderColor: "#52c41a",
+          // }}
+          onClick={handleAdd}
+          ghost
+        >
+          新增
+        </Button>
+      </Space>
       <EditForm
         form={form}
         isModalOpen={isModalOpen}

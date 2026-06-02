@@ -1,4 +1,4 @@
-# 表格排序
+## 表格排序
 
 設定 render 讓欄位顯示不同內容
 讓 B , S 字串顯示成 買入 , 賣出
@@ -21,4 +21,15 @@
       sorter: (a, b) => dayjs(a.trade_date).unix() - dayjs(b.trade_date).unix(),
     },
  ]   
+```
+
+
+## 數字
+有小數點的數字,在 50.00 的狀況, 不顯示 .00
+使用 Number()
+
+```javascript
+
+render:(od)=> Number(od)
+
 ```
