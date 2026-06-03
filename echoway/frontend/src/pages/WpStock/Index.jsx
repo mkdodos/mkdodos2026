@@ -91,7 +91,7 @@ function Index() {
     },
   ];
 
-  const [params, setParams] = useState(null);
+  const [params, setParams] = useState({ od: "", sn: "" });
 
   const handleSearch = () => {
     console.log(params);

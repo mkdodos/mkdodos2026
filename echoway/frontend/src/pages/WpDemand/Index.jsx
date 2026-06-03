@@ -86,7 +86,7 @@ const Index = () => {
       key: "spec",
       render: (_, record) => (
         <span>
-          Φ {record.od} × {record.len} mm
+          Φ {record.od} × {record.len}
         </span>
       ),
     },
@@ -148,7 +148,7 @@ const Index = () => {
             // onClick={() => handleRunBFD(record.id)}
             onClick={() => handleRunBFD(record)}
           >
-            執行排產
+            預覽
           </Button>
           <Button
             icon={<EditOutlined />}

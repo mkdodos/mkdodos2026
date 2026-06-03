@@ -22,6 +22,7 @@ router.get("/stock-fit", async (req, res) => {
     const sql = `    
       SELECT 
           id, 
+          sn,
           od, 
           len, 
           (len - $1) AS remain_len

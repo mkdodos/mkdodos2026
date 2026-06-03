@@ -11,8 +11,14 @@ export const useData = () => {
 
   const getData = async () => {
     const response = await axios.get(API_BASE);
-    setData(response.data.data);
-    console.log(API_BASE);
+
+    const formatted = response.data.data.map((item) => ({
+      ...item,
+      od: parseFloat(item.od), // 將 len 欄位去除 .00
+    }));
+
+    setData(formatted);
+    // console.log(API_BASE);
     // console.log(response.data);
   };
 

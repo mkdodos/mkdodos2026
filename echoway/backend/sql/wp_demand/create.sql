@@ -2,7 +2,7 @@ CREATE TABLE wp_demand (
     id SERIAL PRIMARY KEY,
     order_no VARCHAR(50),               -- 訂單編號或工單號
     od NUMERIC(10, 2) NOT NULL,         -- 目標外徑
-    len NUMERIC(10, 2) NOT NULL,        -- 目標長度
+    len SMALLINT NOT NULL,        -- 目標長度
     qty INTEGER NOT NULL DEFAULT 1,     -- 需要的數量
     wall_thickness NUMERIC(10, 2),      -- 厚度 (如有需要)    
     priority INTEGER DEFAULT 1,         -- 優先順序 (1:普通, 5:最急)
