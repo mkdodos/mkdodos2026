@@ -20,7 +20,7 @@ const Index = () => {
   const { Title } = Typography;
   const [form] = Form.useForm();
 
-  const { data, saveData, deleteData, runBFD, dataFit } = useData();
+  const { data, saveData, deleteData, runBFD, runCut, dataFit } = useData();
 
   const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
@@ -184,6 +184,7 @@ const Index = () => {
           open={isModalFitOpen}
           setOpen={setIsModalFitOpen}
           demand={demand}
+          runCut={runCut}
         />
         <Title level={3}>切割需求管理</Title>
         <Button type="primary" onClick={showModal}>

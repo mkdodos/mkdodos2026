@@ -5,6 +5,15 @@ const helper = require("../utils/db-helper");
 
 const TABLE_NAME = "wp_demand"; // 只要改這裡，就能套用到不同資料表
 
+// 確定切割
+// 1.新增餘料至庫存
+// 2.新增切割記錄
+
+router.get("/stock-fit-cut", async (req, res) => {
+  // console.log(req.demain_id);
+  res.send(req.query.demand_id);
+});
+
 // 尋找合適的庫存
 // 外徑相同,長度大於等於,依長度由小到大排序
 router.get("/stock-fit", async (req, res) => {

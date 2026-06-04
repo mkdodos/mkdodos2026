@@ -26,6 +26,16 @@ export const useData = () => {
     getData();
   }, []);
 
+  // 切割
+  const runCut = async (record) => {
+    console.log(record);
+    const url = `${API_BASE}/stock-fit-cut`;
+    const { demand_id, stock_id } = record;
+    const response = await axios.get(url, { params: { demand_id, stock_id } });
+    console.log(response.data);
+  };
+
+  // 尋找合適材料
   const runBFD = async (record) => {
     // console.log(record);
     // const url = `${API_BASE}/stock-fit?len=680&od=60.7`;
@@ -61,5 +71,5 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData, runBFD, dataFit };
+  return { data, saveData, deleteData, runBFD, runCut, dataFit };
 };
