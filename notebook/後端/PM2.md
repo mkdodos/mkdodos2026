@@ -1,7 +1,7 @@
 全域安裝
 `npm install pm2 -g`
 
-1. 進到您的專案目錄，啟動程式
+1. 進到專案目錄，啟動程式
 `pm2 start app.js --name "my-node-app"`
 `--name` "自訂這個背景處理程序的名稱"
 

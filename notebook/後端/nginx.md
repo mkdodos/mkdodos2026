@@ -38,8 +38,9 @@
 `nginx-service.exe install`
   啟動 Nginx 服務
 `nginx-service.exe start`
-    
-# 功用
+
+---
+# Nginx功用
 web server
 用來託管 build 出來的 dist
 

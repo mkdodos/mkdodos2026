@@ -6,6 +6,7 @@ import BasicLayout from "../layouts/BasicLayout";
 import Customers from "../pages/customers/Index";
 import WpStock from "../pages/WpStock/Index";
 import WpDemand from "../pages/WpDemand/Index";
+import WpCutLogs from "../pages/WpCutLogs/Index";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "wp-demand",
         element: <WpDemand />,
+      },
+      {
+        path: "wp-cut-logs",
+        element: <WpCutLogs />,
       },
     ],
   },

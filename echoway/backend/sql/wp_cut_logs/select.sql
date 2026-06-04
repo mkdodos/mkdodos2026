@@ -1,0 +1,1 @@
+SELECT * FROM wp_cut_logs

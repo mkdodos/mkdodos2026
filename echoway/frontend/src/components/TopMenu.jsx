@@ -26,6 +26,7 @@ function TopMenu() {
   const menuItems = [
     { key: "/wp-stock", icon: <AppstoreOutlined />, label: "料件庫存" },
     { key: "/wp-demand", icon: <ScissorOutlined />, label: "切割需求" },
+    { key: "/wp-cut-logs", icon: <ScissorOutlined />, label: "切割記錄" },
     {
       key: "customers",
       icon: <TeamOutlined />,
