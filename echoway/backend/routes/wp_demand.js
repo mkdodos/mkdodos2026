@@ -10,8 +10,48 @@ const TABLE_NAME = "wp_demand"; // 只要改這裡，就能套用到不同資料
 // 2.新增切割記錄
 
 router.get("/stock-fit-cut", async (req, res) => {
+  try {
+    //     const sql = `INSERT INTO wp_cut_logs
+    // (stock_id,demand_id,cut_len,remain_len)
+    // VALUES
+    // (374,16,1,2)`;
+
+    await db.query("BEGIN");
+
+    const { stock_id, demand_id, cut_len, remain_len, od } = req.query;
+    // 查詢一
+    const sql = `INSERT INTO wp_cut_logs (stock_id, demand_id, cut_len, remain_len)
+             VALUES ($1, $2, $3, $4)`;
+
+    const result = await db.query(sql, [
+      stock_id,
+      demand_id,
+      cut_len,
+      remain_len,
+    ]);
+
+    // 查詢二
+    const sql2 = `INSERT INTO wp_stock (parent_id,sn,od ,len)
+             VALUES ($1, $2,$3, $4)`;
+
+    await db.query(sql2, [stock_id, "1139", 1140, remain_len]);
+
+    await db.query("COMMIT");
+
+    res.json({
+      success: true,
+      data: req.query,
+    });
+  } catch (err) {
+    await db.query("ROLLBACK"); // 任一失敗，全部取消
+    res.status(500).json({ success: false, error: err.message });
+    // console.error(err);
+    // res.status(500).send("資料庫連線出錯");
+  }
+
   // console.log(req.demain_id);
-  res.send(req.query.demand_id);
+  // res.send(req.query.stock_id);
+  // res.send(req.query.demand_id);
 });
 
 // 尋找合適的庫存

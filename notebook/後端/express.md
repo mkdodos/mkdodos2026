@@ -41,6 +41,15 @@ router.get("/", async (req, res) => {
 ```
 
 ```javascript
+// 參數化查詢
+const { stock_id, demand_id, len } = req.query;
+const sql = `INSERT INTO cut_logs (stock_id, demand_id, len)
+			 VALUES ($1, $2, $3)`;  
+await pool.query(sql, [stock_id, demand_id, len]);    
+```
+
+
+```javascript
 const express = require("express");
 const boxRouter = require("./routes/boxes"); // 引入路由檔案
 const app = express();
