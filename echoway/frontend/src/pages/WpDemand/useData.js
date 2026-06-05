@@ -30,9 +30,9 @@ export const useData = () => {
   const runCut = async (record) => {
     console.log(record);
     const url = `${API_BASE}/stock-fit-cut`;
-    const { demand_id, stock_id, cut_len, remain_len } = record;
+    const { demand_id, stock_id, cut_len, remain_len, od } = record;
     const response = await axios.get(url, {
-      params: { demand_id, stock_id, cut_len, remain_len },
+      params: { demand_id, stock_id, cut_len, remain_len, od },
     });
     console.log(response.data);
   };

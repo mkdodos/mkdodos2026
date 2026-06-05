@@ -34,6 +34,7 @@ function FitStock({ data, open, setOpen, demand, runCut }) {
       cut_len: demand.len,
       stock_id: data[0].id,
       remain_len: data[0].remain_len,
+      od: data[0].od,
     };
     runCut(row);
     // console.log(row);

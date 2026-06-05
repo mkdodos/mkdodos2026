@@ -1,0 +1,1 @@
+UPDATE wp_stock SET qty=1

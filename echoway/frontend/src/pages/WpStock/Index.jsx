@@ -82,6 +82,10 @@ function Index() {
       dataIndex: "status",
     },
     {
+      title: "qty",
+      dataIndex: "qty",
+    },
+    {
       title: "demand_id",
       dataIndex: "demand_id",
     },

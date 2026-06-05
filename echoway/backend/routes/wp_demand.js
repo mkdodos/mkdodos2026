@@ -8,6 +8,7 @@ const TABLE_NAME = "wp_demand"; // 只要改這裡，就能套用到不同資料
 // 確定切割
 // 1.新增餘料至庫存
 // 2.新增切割記錄
+// 3.更新原庫存數量 1 => 0
 
 router.get("/stock-fit-cut", async (req, res) => {
   try {
@@ -31,16 +32,22 @@ router.get("/stock-fit-cut", async (req, res) => {
     ]);
 
     // 查詢二
-    const sql2 = `INSERT INTO wp_stock (parent_id,sn,od ,len)
-             VALUES ($1, $2,$3, $4)`;
+    const sql2 = `INSERT INTO wp_stock (parent_id,sn,od ,len,qty)
+             VALUES ($1, $2,$3, $4,$5)`;
 
-    await db.query(sql2, [stock_id, "1139", 1140, remain_len]);
+    await db.query(sql2, [stock_id, "04431", od, remain_len, 1]);
 
+    // 查詢三
+    const sql3 = `UPDATE wp_stock SET qty = 0 WHERE id=$1`;
+
+    await db.query(sql3, [stock_id]);
+
+    //
     await db.query("COMMIT");
 
     res.json({
       success: true,
-      data: req.query,
+      data: sql3,
     });
   } catch (err) {
     await db.query("ROLLBACK"); // 任一失敗，全部取消
