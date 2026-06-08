@@ -2,13 +2,29 @@ import React, { useState } from "react";
 import { useData } from "./useData";
 import TableView from "./TableView";
 import EditForm from "./EditForm";
+import DetailView from "./DetailView";
 import { Button, Tag, Form, Input, Space } from "antd";
-import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons"; // 建議加個圖示比較專業
+import {
+  EditOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  EyeOutlined,
+} from "@ant-design/icons"; // 建議加個圖示比較專業
 
 function Index() {
-  const { data, saveData, deleteData, setData, originalData } = useData();
+  const {
+    data,
+    saveData,
+    deleteData,
+    setData,
+    originalData,
+    viewDetail,
+    dataDetail,
+  } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [viewingId, setViewingId] = useState(null);
   const [query, setQuery] = useState("");
 
   const [form] = Form.useForm();
@@ -42,6 +58,12 @@ function Index() {
     setEditingId(record.id);
   };
 
+  const handleViewDetail = (record) => {
+    viewDetail(record.id);
+    setIsDetailOpen(true);
+    // console.log(record.id);
+  };
+
   const columns = [
     {
       title: "操作",
@@ -50,6 +72,17 @@ function Index() {
         <Button
           icon={<EditOutlined />}
           onClick={() => handleEdit(record)}
+          type="text"
+        />
+      ),
+    },
+    {
+      title: "明細",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          icon={<EyeOutlined />}
+          onClick={() => handleViewDetail(record)}
           type="text"
         />
       ),
@@ -144,6 +177,12 @@ function Index() {
           新增
         </Button>
       </Space>
+      <DetailView
+        id={viewingId}
+        setIsModalOpen={setIsDetailOpen}
+        isModalOpen={isDetailOpen}
+        data={dataDetail}
+      />
       <EditForm
         form={form}
         isModalOpen={isModalOpen}

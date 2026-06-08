@@ -5,6 +5,7 @@ import { message } from "antd";
 
 export const useData = () => {
   const [data, setData] = useState([]);
+  const [dataDetail, setDataDetail] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   // 修改路徑
   const API_BASE = "/api/wp-stock";
@@ -24,6 +25,12 @@ export const useData = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const viewDetail = async (editingId) => {
+    const response = await axios.get(`${API_BASE}/family-tree`);
+    setDataDetail(response.data.data);
+    console.log(response.data.data);
+  };
 
   const saveData = async (values, editingId) => {
     if (editingId) {
@@ -49,5 +56,13 @@ export const useData = () => {
     return true; // 回傳成功狀態，方便 UI 決定是否關閉 Modal
   };
 
-  return { data, saveData, deleteData, originalData, setData };
+  return {
+    data,
+    saveData,
+    deleteData,
+    originalData,
+    setData,
+    viewDetail,
+    dataDetail,
+  };
 };

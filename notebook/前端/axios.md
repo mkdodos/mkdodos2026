@@ -1,3 +1,8 @@
+get
+```javascript
+ const response = await axios.get(API_BASE);
+```
+
 axios 取得資料後,搭配 antd Table 顯示資料
 ```javascript
 import React, { useEffect } from "react";
