@@ -27,7 +27,7 @@ export const useData = () => {
   }, []);
 
   const viewDetail = async (editingId) => {
-    const response = await axios.get(`${API_BASE}/family-tree`);
+    const response = await axios.get(`${API_BASE}/${editingId}/family-tree`);
     setDataDetail(response.data.data);
     console.log(response.data.data);
   };

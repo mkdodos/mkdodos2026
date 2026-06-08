@@ -6,13 +6,13 @@ const helper = require("../utils/db-helper");
 const TABLE_NAME = "wp_stock";
 
 // 家族樹狀查詢
-router.get("/family-tree", async (req, res) => {
+router.get("/:id/family-tree", async (req, res) => {
   try {
     const sql = `
-      WITH RECURSIVE family_tree AS (
+     WITH RECURSIVE family_tree AS (
         SELECT id, sn, od, len, parent_id, 1 AS level
         FROM wp_stock
-        WHERE parent_id IS NULL AND id = 1
+        WHERE id = ${req.params.id}
 
         UNION ALL
 
@@ -22,13 +22,17 @@ router.get("/family-tree", async (req, res) => {
       )
       SELECT 
         id, 
-        repeat(' | ', level - 1) || sn AS tree_structure, 
+        sn AS tree_structure, 
         len, 
         level
       FROM family_tree;
     `;
     const result = await db.query(sql);
-    res.json({ success: true, data: result.rows });
+    res.json({
+      success: true,
+      data: result.rows,
+      sql: sql,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("資料庫連線出錯");

@@ -19,7 +19,7 @@ export default function DetailView({ id, data, isModalOpen, setIsModalOpen }) {
   return (
     <div>
       <Modal
-        title="需求編輯表單"
+        title="Family tree"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}

@@ -19,8 +19,8 @@ router.get("/stock-fit-cut", async (req, res) => {
 
     await db.query("BEGIN");
 
-    const { stock_id, demand_id, cut_len, remain_len, od } = req.query;
-    // 查詢一
+    const { stock_id, demand_id, cut_len, remain_len, od, sn } = req.query;
+    // 新增切割記錄
     const sql = `INSERT INTO wp_cut_logs (stock_id, demand_id, cut_len, remain_len)
              VALUES ($1, $2, $3, $4)`;
 
@@ -31,13 +31,15 @@ router.get("/stock-fit-cut", async (req, res) => {
       remain_len,
     ]);
 
-    // 查詢二
+    // sn : 原 sn 序號+1
+    // 新增餘料至庫存
     const sql2 = `INSERT INTO wp_stock (parent_id,sn,od ,len,qty)
              VALUES ($1, $2,$3, $4,$5)`;
 
-    await db.query(sql2, [stock_id, "04431", od, remain_len, 1]);
+    // const sn=
+    await db.query(sql2, [stock_id, sn + 1, od, remain_len, 1]);
 
-    // 查詢三
+    // 更新原庫存數量 1 => 0
     const sql3 = `UPDATE wp_stock SET qty = 0 WHERE id=$1`;
 
     await db.query(sql3, [stock_id]);
@@ -85,6 +87,7 @@ router.get("/stock-fit", async (req, res) => {
       FROM wp_stock 
       WHERE od = $2 
         AND len >= $1
+        AND qty >0
       ORDER BY len ASC
       LIMIT 1;
           `;
