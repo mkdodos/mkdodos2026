@@ -13,6 +13,8 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
+// import puppeteer from "puppeteer";
+
 export default function Index() {
   const { data, saveItem, deleteItem } = useCates();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,14 +111,15 @@ export default function Index() {
   //   },
   // ]}
 
+  const handlePdf = () => {};
   return (
     <div>
+      <Button onClick={handlePdf}>pdf</Button>
       {isMobile ? (
         <MobileDemo data={data} />
       ) : (
         <Table dataSource={data} columns={columns} rowKey="id" />
       )}
-
       <Modal
         title="編輯表單"
         closable={{ "aria-label": "Custom Close Button" }}

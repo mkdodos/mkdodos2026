@@ -1,6 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db"); // 引入連線模組
+const puppeteer = require("puppeteer");
+const path = require("path");
+
+router.get("/screenshot", async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, "hn.pdf");
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto("https://news.ycombinator.com", {
+      waitUntil: "networkidle2",
+    });
+    await page.pdf({ path: filePath, format: "A4", printBackground: true });
+    await browser.close();
+
+    res.sendFile(filePath); // 直接在瀏覽器開啟
+  } catch (err) {
+    res.status(500).send("失敗：" + err.message);
+  }
+});
+
+router.get("/screenshot123", async (req, res) => {
+  try {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto("http://192.168.0.10:5173/cates", {
+      waitUntil: "networkidle2",
+    });
+    await page.pdf({ path: "hn.pdf", format: "letter", printBackground: true });
+    await browser.close();
+    res.download("hn.pdf");
+    // res.sendFile(path.resolve("hn.pdf"));
+  } catch (err) {
+    res.status(500).send("產生 PDF 失敗：" + err.message);
+  }
+});
 
 // 取得資料
 router.get("/", async (req, res) => {

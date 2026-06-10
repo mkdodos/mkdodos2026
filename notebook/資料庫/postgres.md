@@ -1,6 +1,12 @@
-# postgres 資料庫
 
 
+[psql](#psql)
+[資料表欄位型別](#資料表欄位型別)
+[資料備份](#執行資料備份)
+
+
+
+## psql
 使用 psql
 `./psql -h localhost -p 5432 -U postgres -d mkdodos`
 

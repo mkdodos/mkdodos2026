@@ -5,6 +5,75 @@ const db = require("../db"); // 連線模組
 
 const TABLE_NAME = "funds"; // 只要改這裡，就能套用到不同資料表
 
+router.get("/total2", async (req, res) => {
+  async function fetchTWSEPrices(stockNos) {
+    // TWSE 支援一次查多支，格式：tse_2330.tw|tse_2317.tw
+    const query = stockNos.map((no) => `tse_${no}.tw`).join("|");
+    const url = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=${query}&json=1&delay=0&_=${Date.now()}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // 轉成 { '2330': 980, '2317': 105 } 的格式
+    // return Object.fromEntries(
+    //   (data.msgArray ?? []).map((s) => [
+    //     s.c, // 股票代號
+    //     parseFloat(s.z ?? s.y ?? "0"), // 成交價，盤後用昨收(y)
+    //   ]),
+    // );
+    return Object.fromEntries(
+      (data.msgArray ?? []).map((s) => {
+        const rawPrice = s.z !== "-" ? s.z : s.y; // ← 關鍵修正
+        return [
+          s.c,
+          {
+            price: parseFloat(rawPrice ?? "0"),
+            time: s.t, // 最後成交時間，e.g. "13:25:00"
+            isRealtime: s.z !== "-", // 是否為即時價
+          },
+        ];
+        // return [s.c, parseFloat(rawPrice ?? "0")];
+      }),
+    );
+  }
+
+  async function getPortfolioWithPrice() {
+    // Step 1: 查詢持倉
+    const { rows: holdings } = await db.query(`
+  SELECT 
+    f.fund_id, 
+    s.stock_no,
+    s.stock_name,
+    SUM(CASE WHEN f.side = 'B' THEN f.qty ELSE -f.qty END) AS total_qty
+  FROM funds f
+  INNER JOIN stock_master s ON f.fund_id = s.id
+  GROUP BY f.fund_id, s.stock_no, s.stock_name
+  HAVING SUM(CASE WHEN f.side = 'B' THEN f.qty ELSE -f.qty END) > 0
+  ORDER BY f.fund_id
+`);
+
+    // Step 2: 批次取得即時股價
+    const symbols = [...new Set(holdings.map((h) => h.stock_no))];
+    const priceMap = await fetchTWSEPrices(symbols);
+
+    // Step 3: Merge 回持倉
+    return holdings.map((row) => {
+      const price = priceMap[row.stock_no] ?? null;
+      return {
+        ...row,
+        price,
+        market_value: price ? price * row.total_qty : null,
+      };
+    });
+  }
+
+  const portfolio = await getPortfolioWithPrice();
+  console.table(portfolio);
+  res.json(portfolio);
+  const stock = portfolio?.find((s) => s.c === "2891");
+  console.log("中信金原始資料:", JSON.stringify(stock));
+});
+
 // 取得加總資料
 // 取得資料
 router.get("/total", async (req, res) => {

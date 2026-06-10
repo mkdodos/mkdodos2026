@@ -1,3 +1,10 @@
+
+## 分頁
+```javascript
+// 關閉分頁
+<Table pagination={false}  />
+```
+
 ## 表格排序
 
 設定 render 讓欄位顯示不同內容

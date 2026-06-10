@@ -34,3 +34,11 @@ pm2-windows-startup 是一個「適配器」。它跳過了官方的偵測機制
 - 停止程式：`pm2 stop my-node-app`    
 - 重啟程式：`pm2 restart my-node-app`    
 - 查看日誌：`pm2 logs`
+- 查看服務內容 : `pm2 info my-node-app`
+
+無法直接重新命名,需刪除服務,再建立新服務
+```
+pm2 delete my-node-app
+pm2 start app.js --name "新名稱"
+pm2 save
+```

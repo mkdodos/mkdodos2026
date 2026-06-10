@@ -44,7 +44,12 @@ function Portfolio() {
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table
+        pagination={false}
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+      />
     </div>
   );
 }
