@@ -6,10 +6,12 @@ const PORT = 3333;
 
 app.get("/api/download-hn", async (req, res) => {
   try {
+    const quoteId = req.query.id;
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto("http://192.168.0.10:3002/quotation-pdf", {
+    await page.goto(`http://192.168.0.10:3002/quotation-pdf?id=${quoteId}`, {
       waitUntil: "networkidle2",
     });
 
