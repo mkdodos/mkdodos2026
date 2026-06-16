@@ -83,6 +83,7 @@ function Index() {
       width: "10%",
       editable: true,
       required: false,
+      render: (value) => Number(value),
     },
     {
       title: "小計",

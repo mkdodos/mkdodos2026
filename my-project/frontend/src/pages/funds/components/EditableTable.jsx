@@ -7,6 +7,7 @@ import {
   message,
   Button,
   Space,
+  Statistic,
 } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -18,7 +19,7 @@ const EditableTable = ({ apiEndpoint, columnsConfig, stocks }) => {
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
 
-  console.log(stocks);
+  // console.log(stocks);
 
   // const [stocks, setStocks] = useState([]); // 存儲資料庫回來的股票清單
   // const [stockMap, setStockMap] = useState({});
@@ -45,10 +46,20 @@ const EditableTable = ({ apiEndpoint, columnsConfig, stocks }) => {
   //   }
   // };
 
+  function calcNetProfit(arr) {
+    return arr.reduce((acc, item) => {
+      const amount = Number(item.subtotal);
+      return item.side === "B" ? acc - amount : acc + amount;
+    }, 0);
+  }
+
+  // console.log(calcNetProfit(data)); // 530
+
   const fetchData = async () => {
     try {
       const res = await axios.get(apiEndpoint);
       setData(res.data.data);
+      console.log(res.data.data);
     } catch (err) {
       message.error("獲取資料失敗");
     }
@@ -286,6 +297,29 @@ const EditableTable = ({ apiEndpoint, columnsConfig, stocks }) => {
       >
         新增一列
       </Button>
+      {/* {calcNetProfit(data)} */}
+
+      {/* <Statistic
+        title="淨利"
+        style={{ display: "flex", alignItems: "center", gap: 8 }}
+        // layout="horizontal"
+        value={calcNetProfit(data)}
+        precision={2}
+        valueStyle={{ color: calcNetProfit(data) >= 0 ? "#1677ff" : "red" }}
+      /> */}
+
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span>淨利</span>
+        <span
+          style={{
+            fontSize: 24,
+            // fontWeight: "bold",
+            color: calcNetProfit(data) >= 0 ? "#1677ff" : "red",
+          }}
+        >
+          {calcNetProfit(data).toLocaleString()}
+        </span>
+      </div>
 
       {/* component={false} 這個屬性很重要。因為 HTML 規範中 <table> 標籤內不能直接嵌套 <form> 標籤，設定為 false 可以讓 Form 元件只作為「功能容器」存在，而不會在 DOM 裡面多長出一層 form 節點，避免破壞表格結構。 */}
       <Form form={form} component={false}>

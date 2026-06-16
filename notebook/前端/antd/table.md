@@ -32,11 +32,11 @@
 
 
 ## 數字
-有小數點的數字,在 50.00 的狀況, 不顯示 .00
+有小數點的[[數字]],在 50.00 的狀況, 不顯示 .00
 使用 Number()
 
 ```javascript
 
-render:(od)=> Number(od)
+render:(value)=> Number(value)
 
 ```
