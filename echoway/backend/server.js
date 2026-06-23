@@ -6,6 +6,8 @@ const wpStockRouter = require("./routes/wp_stock");
 const wpDemandRouter = require("./routes/wp_demand");
 const wpCutLogsRouter = require("./routes/wp_cut_logs");
 
+const adoCust = require("./routes/ado/customers");
+
 const db = require("./db"); // 引入剛才寫的連線模組
 const app = express();
 
@@ -20,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/customers", customerRouter);
+app.use("/api/ado/customers", adoCust);
 app.use("/api/stocks", stockRouter);
 app.use("/api/fees", feeRouter);
 app.use("/api/wp-stock", wpStockRouter);

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
 
-const API_BASE = "http://192.168.0.10:3001/api/customers";
+const API_BASE = "http://192.168.0.10:3001/api/ado/customers";
 
 export const useCustomers = () => {
   const [data, setData] = useState([]);
