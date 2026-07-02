@@ -22,3 +22,32 @@
 [製作中文字型](https://peckconsulting.s3.amazonaws.com/fontconverter/fontconverter.html)
 上傳ttf
 將 `.ttf` 檔案轉換為 **Base64** 編碼字串
+
+---
+將字型檔從src資料夾移出,避免打包後檔案太大
+放在 public/fonts 資料夾,實際產生PDF時,再載入
+
+```javascript
+function arrayBufferToBase64(buffer) {
+	const bytes = new Uint8Array(buffer);
+	const chunkSize = 8192;
+	let binary = "";
+	for (let i = 0; i < bytes.length; i += chunkSize) {
+	  const chunk = bytes.subarray(i, i + chunkSize);
+	  binary += String.fromCharCode(...chunk);
+	}
+	return btoa(binary);
+}
+
+const print = async () => {
+ // 按下按鈕才載入字型，不進 bundle
+    const fontBuffer = await fetch(
+      "/echoway2025/build/fonts/NotoSansTC-Regular.ttf",
+    ).then((r) => r.arrayBuffer());
+    const fontBase64 =  arrayBufferToBase64(fontBuffer);
+    ...
+    doc.addFileToVFS("NotoSansTC-Regular-normal.ttf", fontBase64);
+    ...
+}
+
+```
